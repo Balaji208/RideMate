@@ -6,17 +6,21 @@ const app = express();
 const cors = require('cors');
 const connectToDb = require('./db/db');
 connectToDb();
-const userRoutes = require('./routes/user.routes');
+const cookieParser = require('cookie-parser');
+
 
 app.use(cors());    
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
 
+
+const riderRoutes = require('./routes/rider/rider.routes');
 
 app.get('/',(request,response)=>{
     response.send(' Hello World');
 });
 
-app.use('/users', userRoutes);
+app.use('/users', riderRoutes);
 
 module.exports = app;
