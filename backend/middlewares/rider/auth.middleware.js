@@ -1,4 +1,4 @@
-const riderModel = require("../models/rider/rider.model");
+const riderModel = require("../../models/rider/rider.model");
 const jwt = require("jsonwebtoken");
 
 module.exports.authRider = async (req, res, next) => {

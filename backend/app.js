@@ -19,7 +19,7 @@ connectToDb();
 
 // Middleware setup
 app.use(cors({
-    origin: "http://localhost:3001",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -30,7 +30,7 @@ app.use(cookieParser());
 // Configure cookie session for OAuth
 app.use(cookieSession({
     name: "session",
-    keys: [process.env.COOKIE_KEY || "cyberwolve"], // Use environment variable for security
+    keys: [process.env.COOKIE_KEY || "ridemate"], // Use environment variable for security
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
@@ -41,7 +41,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.OAUTH_CLIENT_ID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    callbackURL: "http://localhost:8080/auth/google/callback"
+    callbackURL: process.env.OAUTH_CALLBACK_URL
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         // Find or create user based on Google profile
@@ -61,6 +61,7 @@ passport.use(new GoogleStrategy({
         }
         return done(null, user);
     } catch (error) {
+        console.error("Error in GoogleStrategy:", error);
         return done(error, null);
     }
 }));
@@ -86,7 +87,7 @@ app.get("/", (req, res) => {
 app.use("/users", riderRoutes);
 
 // Google OAuth routes
-app.get("/auth/google", passport.authenticate("google", { scope: ["email", "profile"] }));
+app.get("/auth/google", passport.authenticate("google", { scope: ["email", "profile"] , prompt : "consent"}));
 
 app.get("/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/login" }),

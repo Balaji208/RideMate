@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const riderController = require("../controllers/rider/rider.controller");
+const riderController = require("../../controllers/rider/rider.controller");
 const { body } = require("express-validator");
-const authRider = require("../middlewares/rider/auth.middleware");
+const {authRider} = require("../../middlewares/rider/auth.middleware");
 
 // Email/Password Registration and Login
 router.post("/register", [

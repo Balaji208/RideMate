@@ -92,7 +92,7 @@ module.exports.googleCallback = async (req, res, next) => {
             secure: true, // Use HTTPS in production
             sameSite: "strict"
         });
-        res.redirect("http://localhost:3001/dashboard"); // Redirect to frontend
+        res.redirect(`${process.env.CLIENT_URL}/dashboard`); // Redirect to frontend
     } catch (error) {
         next(error);
     }

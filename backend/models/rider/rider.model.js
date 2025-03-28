@@ -24,9 +24,9 @@ const riderSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: 'Phone number cannot be left blank.',
+        required: function() { return this.oAuthProvider === "email"; }, // Only required for email/password users
         unique: true,
-        minlength : 10
+        minlength: 10
     },
     password: {
         type: String,
@@ -89,9 +89,6 @@ const riderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-riderSchema.index({ email: 1 });
-riderSchema.index({ phone: 1 });
-riderSchema.index({ oAuthId: 1 });
 riderSchema.methods.generateAuthToken = function () {
     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
