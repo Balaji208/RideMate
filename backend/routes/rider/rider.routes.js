@@ -1,30 +1,34 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { body } = require('express-validator');
-const riderController = require('../../controllers/rider/rider.controller');
-const authMiddleWare = require('../../middlewares/auth.middleware');
+const riderController = require("../controllers/rider/rider.controller");
+const { body } = require("express-validator");
+const authRider = require("../middlewares/rider/auth.middleware");
 
-router.post('/register', [
-    body('email').isEmail().withMessage('Invalid Email Address'),
-    body('fullName.firstName').isLength({ min: 3 }).withMessage(
-        'First name must be at least 3 characters long.'
+// Email/Password Registration and Login
+router.post("/register", [
+    body("email").isEmail().withMessage("Invalid Email Address"),
+    body("fullName.firstName").isLength({ min: 3 }).withMessage(
+        "First name must be at least 3 characters long."
     ),
-    body('phone').isLength({ min: 1}).withMessage(
-        'Psss must be at least 6 characters long.'
+    body("phone").isLength({ min: 10 }).withMessage(
+        "Phone number must be at least 10 characters long."
     ),
-    body('password').isLength({ min: 6}).withMessage(
-        'Password must be at least 6 characters long.'
-    )
-],
-    riderController.registerUser);
+    body("password").if(body("oAuthId").not().exists()).isLength({ min: 6 }).withMessage(
+        "Password must be at least 6 characters long."
+    ) // Only validate password if no oAuthId
+], riderController.registerUser);
 
-router.post('/login',[
-    body('email').isEmail().withMessage('Invalid Email Address'),
-    body('password').isLength({ min: 6}).withMessage(
-        'Password must be at least 6 characters long.'
-    )
-],
-    riderController.loginUser);
+router.post("/login", [
+    body("email").isEmail().withMessage("Invalid Email Address"),
+    body("password").if(body("oAuthId").not().exists()).isLength({ min: 6 }).withMessage(
+        "Password must be at least 6 characters long."
+    ) // Only validate password if no oAuthId
+], riderController.loginUser);
 
-router.get('/profile',authMiddleWare.authRider,riderController.getUserProfile)
-module.exports = router;    
+// Protected route (requires JWT)
+router.get("/profile", authRider, riderController.getUserProfile);
+
+// Google OAuth routes
+router.get("/auth/google", riderController.googleCallback); // Simplified for this example (use Passport in app.js)
+
+module.exports = router;

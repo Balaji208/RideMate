@@ -30,9 +30,19 @@ const riderSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: 'Password cannot be left blank.',
-        minlength: [6, 'Password must be at least 6 characters long.'],
+        required: function() { return this.oAuthProvider === "email"; }, 
+        minlength: [6, "Password must be at least 6 characters long."],
         select: false
+    },
+    oAuthId: {
+        type: String,
+        unique: true,
+        sparse: true // Allows null for non-OAuth users
+    },
+    oAuthProvider: {
+        type: String,
+        enum: ["google", "twitter", "facebook", "email"],
+        default: "email"
     },
     profilePic: {
         type: String,
@@ -79,7 +89,9 @@ const riderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-
+riderSchema.index({ email: 1 });
+riderSchema.index({ phone: 1 });
+riderSchema.index({ oAuthId: 1 });
 riderSchema.methods.generateAuthToken = function () {
     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
