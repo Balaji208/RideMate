@@ -4,7 +4,7 @@ dotenv.config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const cookieSession = require("cookie-session");
+const session = require("express-session");
 const passport = require("./utils/rider/passport");
 const connectToDb = require("./db/db");
 const riderRoutes = require("./routes/rider/rider.routes");
@@ -30,10 +30,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Configure cookie session for OAuth
-app.use(cookieSession({
-    name: "session",  // The name of the cookie that will store the session
-    keys: [process.env.COOKIE_KEY || "ridemate"], // Key for encrypting the cookie
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "ridemate", // Use a strong secret
+    resave: false,  // Don't save session if nothing changed
+    saveUninitialized: false, // Don't create session until something is stored
+    cookie: {
+        secure: process.env.NODE_ENV === "PRODUCTION", // Secure only in production
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
 }));
 
 // Passport configuration
@@ -54,7 +60,7 @@ app.get("/auth/google", passport.authenticate(
 ));
 
 app.get("/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", { failureRedirect: "/" }),
     riderController.googleCallback
 );
 

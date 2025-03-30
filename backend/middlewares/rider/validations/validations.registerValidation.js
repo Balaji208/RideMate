@@ -1,6 +1,7 @@
 const { body } = require("express-validator");
 
 const registerValidation = [
+    
     // Phone number validation (Required if no OAuth)
     body("phone")
         .if(body("oAuthId").not().exists())  // Only validate if no OAuth

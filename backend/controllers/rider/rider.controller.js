@@ -1,6 +1,7 @@
 const riderModel = require("../../models/rider/rider.model");
 const userService = require("../../services/rider/rider.service");
 const { validationResult } = require("express-validator");
+const { sendWelcomeEmail } = require("../../utils/rider/sendWelcomeMail");
 module.exports.registerUser = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -47,7 +48,8 @@ module.exports.registerUser = async (req, res, next) => {
             oAuthId: oAuthId || null,
             oAuthProvider: isOAuth ? oAuthProvider || "google" : null,
         });
-
+        if(email)
+            await sendWelcomeEmail(email,firstName);
         const token = user.generateAuthToken();
         res.status(201).json({ user, token });
     } catch (error) {
@@ -99,7 +101,9 @@ module.exports.getUserProfile = async (req, res, next) => {
 };
 
 module.exports.googleCallback = async (req, res, next) => {
+    console.log(req);
     try {
+        
         const user = req.user; // User object from Passport.js after Google auth
         if (!user) {
             return res.status(401).json({ message: "Authentication failed" });
@@ -111,12 +115,14 @@ module.exports.googleCallback = async (req, res, next) => {
             user.oAuthProvider = "google";
             user.isVerified = true; // Google-verified users are trusted
             await user.save();
+            if(user.email)
+                await sendWelcomeEmail(user.email,user.firstName);
         }
 
         const token = user.generateAuthToken();
         res.cookie("token", token, {
             httpOnly: true,  // Prevents client-side JavaScript access (security)
-            secure: true,    // Ensures the cookie is sent over HTTPS (production)
+            secure: false,    // Ensures the cookie is sent over HTTPS (production)
             sameSite: "strict" // Prevents CSRF attacks
         });
 

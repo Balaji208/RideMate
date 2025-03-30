@@ -7,14 +7,26 @@ const riderSchema = new mongoose.Schema({
     fullName: {
         firstName: {
             type: String,
-            required: 'First name cannot be left blank.',
-            minlength: [3, 'First name must be at least 3 characters long.']
+            // minlength: [3, 'First name must be at least 3 characters long.'],
+            // validate: {
+            //     validator: function (value) {
+            //         return !value || value.length >= 3; // Allow empty but enforce min length if provided
+            //     },
+            //     message: 'First name must be at least 3 characters long.'
+            // }
         },
         lastName: {
             type: String,
-            minlength: [3, 'Last name must be at least 3 characters long.']
-        },
+            // minlength: [3, 'Last name must be at least 3 characters long.'],
+            // validate: {
+            //     validator: function (value) {
+            //         return !value || value.length >= 3; // Allow empty but enforce min length if provided
+            //     },
+            //     message: 'Last name must be at least 3 characters long.'
+            // }
+        }
     },
+    
     email: {
         type: String,
         required: 'Email cannot be left bl ank.',
