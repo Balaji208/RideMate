@@ -14,4 +14,8 @@ router.post("/login",loginValidation, riderController.loginUser);
 // Protected route (requires JWT)
 router.get("/profile", authRider, riderController.getUserProfile);
 
+// OTP Authentication
+router.get("/send-otp",riderController.sendOtp);
+router.get("/verify-otp",riderController.verifyOtp);
+
 module.exports = router;

@@ -101,22 +101,26 @@ module.exports.getUserProfile = async (req, res, next) => {
 };
 
 module.exports.googleCallback = async (req, res, next) => {
-    console.log(req);
+    
     try {
         
         const user = req.user; // User object from Passport.js after Google auth
         if (!user) {
             return res.status(401).json({ message: "Authentication failed" });
         }
-
+        
+        console.log("rider contoller.js User : ",req.user);
         // Ensure user has oAuthId and oAuthProvider set
         if (!user.oAuthId || !user.oAuthProvider) {
             user.oAuthId = user.id; // Google ID from profile
             user.oAuthProvider = "google";
             user.isVerified = true; // Google-verified users are trusted
             await user.save();
-            if(user.email)
-                await sendWelcomeEmail(user.email,user.firstName);
+            
+            if(user.email){
+                console.log("Send mail...",user.email," : ",user.fullName.firstName)
+               
+            }
         }
 
         const token = user.generateAuthToken();
@@ -129,5 +133,32 @@ module.exports.googleCallback = async (req, res, next) => {
         res.redirect(`${process.env.CLIENT_URL}/dashboard`); // Redirect to frontend
     } catch (error) {
         next(error);
+    }
+};
+
+// Controller to send OTP
+module.exports.sendOtp = async (req, res) => {
+    const { phone } = req.body;
+    try {
+        const verification = await otpService.sendOtp(phone);
+        res.json({ success: true, status: verification.status });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Controller to verify OTP
+module.exports.verifyOtp = async (req, res) => {
+    const { phone, code } = req.body;
+    try {
+        const verificationCheck = await otpService.verifyOtp(phone, code);
+
+        if (verificationCheck.status === "approved") {
+            res.json({ success: true, message: "OTP Verified!" });
+        } else {
+            res.status(400).json({ success: false, message: "Invalid OTP!" });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 };

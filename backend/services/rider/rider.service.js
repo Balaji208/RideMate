@@ -1,5 +1,7 @@
 const riderModel = require("../../models/rider/rider.model");
 const bcrypt = require("bcryptjs");
+const twilio = require('twilio');
+const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
 module.exports.createUser = async ({ firstName, lastName, email, phone, password, oAuthId, oAuthProvider }) => {
     if (!firstName || (!phone && !email) || (!password && !oAuthId)) {
@@ -31,4 +33,34 @@ module.exports.createUser = async ({ firstName, lastName, email, phone, password
 
     const user = await riderModel.create(userData);
     return user;
+};
+
+
+// Service to send OTP
+const sendOtp = async (phone) => {
+    try {
+        const verification = await client.verify.v2
+            .services(process.env.TWILIO_VERIFY_SID)
+            .verifications.create({ to: phone, channel: "sms" });
+        return verification;
+    } catch (error) {
+        throw new Error(`Error sending OTP: ${error.message}`);
+    }
+};
+
+// Service to verify OTP
+const verifyOtp = async (phone, code) => {
+    try {
+        const verificationCheck = await client.verify.v2
+            .services(process.env.TWILIO_VERIFY_SID)
+            .verificationChecks.create({ to: phone, code });
+        return verificationCheck;
+    } catch (error) {
+        throw new Error(`Error verifying OTP: ${error.message}`);
+    }
+};
+
+module.exports = {
+    sendOtp,
+    verifyOtp
 };

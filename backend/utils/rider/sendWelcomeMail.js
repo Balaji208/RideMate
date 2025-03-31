@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 const getWelcomeEmailTemplate = (displayName) => {
     try {
         let template = fs.readFileSync(
-            path.join(__dirname, "templates", "welcomeEmail.html"),
+            path.join(__dirname, "../../templates/", "welcomeEmail.html"),
             "utf8"
         );
         return template.replace(/{{displayName}}/g, displayName);
@@ -27,6 +27,7 @@ const getWelcomeEmailTemplate = (displayName) => {
 
 // Function to send the welcome email
 const sendWelcomeEmail = async (email, displayName) => {
+    console.log("Send mail function ",displayName,"   : ",email);
     const mailOptions = {
         from: `"RideMate Support" <${process.env.PRODUCT_EMAIL}>`,
         to: email,

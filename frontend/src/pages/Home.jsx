@@ -1,142 +1,116 @@
-import { useState } from "react";
-import { BsFillShieldLockFill, BsTelephoneFill } from "react-icons/bs";
-import { CgSpinner } from "react-icons/cg";
-import { FcGoogle } from "react-icons/fc";
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import OtpInput from "otp-input-react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { toast, Toaster } from "react-hot-toast";
+// 🔥 Google OAuth Client ID
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
 
-import { auth, RecaptchaVerifier, signInWithPhoneNumber,  } from "../../firebase.config";
+const App = () => {
+    const [phone, setPhone] = useState("");
+    const [otp, setOtp] = useState("");
+    const [user, setUser] = useState(null);
 
-const Home = () => {
-  const [otp, setOtp] = useState("");
-  const [phone, setPhone] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showOTP, setShowOTP] = useState(false);
-  const [user, setUser] = useState(null);
-  
-  // Google Sign-In
-  const handleGoogleSignIn = async () => {
-    window.location.href = "http://localhost:3001/auth/google"
-  };
+    // 📌 Send OTP
+    const handleSendOtp = async () => {
+        try {
+            await axios.post("http://localhost:3001/send-otp", { phone });
+            toast.success("OTP Sent!");
+        } catch (error) {
+            toast.error("Failed to send OTP");
+        }
+    };
 
-  // Phone Number Login
-  function onCaptchVerify() {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container",
-        {
-          size: "invisible",
-          callback: () => onSignup(),
-        },
-        auth
-      );
-    }
-  }
+    // 📌 Verify OTP
+    const handleVerifyOtp = async () => {
+        try {
+            await axios.post("http://localhost:3001/verify-otp", { phone, code: otp });
+            toast.success("OTP Verified!");
+        } catch (error) {
+            toast.error("Invalid OTP");
+        }
+    };
 
-  function onSignup() {
-    setLoading(true);
-    onCaptchVerify();
+    // 🔥 Google Sign-In
+    const handleGoogleSignIn = async () => {
+        window.location.href = "http://localhost:3001/auth/google";
+    };
 
-    const appVerifier = window.recaptchaVerifier;
-    const formattedPhone = `+${phone}`;
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-8">
+            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+                <h2 className="text-3xl font-semibold text-center text-indigo-600 mb-6">
+                    OTP Authentication & Google Sign-In
+                </h2>
 
-    signInWithPhoneNumber(auth, formattedPhone, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        setLoading(false);
-        setShowOTP(true);
-        toast.success("OTP Sent Successfully!");
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        toast.error("Failed to Send OTP!");
-      });
-  }
-
-  function onOTPVerify() {
-    setLoading(true);
-    window.confirmationResult
-      .confirm(otp)
-      .then((res) => {
-        setUser(res.user);
-        setLoading(false);
-        toast.success("Phone Authentication Successful!");
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-        toast.error("OTP Verification Failed!");
-      });
-  }
-
-  return (
-    <section className="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-      <div className="bg-white shadow-md rounded-lg p-6 max-w-sm w-full text-center">
-        <Toaster toastOptions={{ duration: 4000 }} />
-        <div id="recaptcha-container"></div>
-
-        {user ? (
-          <h2 className="text-xl font-semibold text-green-600">✅ Login Successful!</h2>
-        ) : (
-          <>
-            <h1 className="text-2xl font-bold mb-6">Welcome to RideMate</h1>
-
-            {/* Google Sign-In */}
-            <button
-              onClick={handleGoogleSignIn}
-              className="flex items-center justify-center bg-white border border-gray-300 rounded-lg px-4 py-2 w-full mb-4 shadow-sm hover:shadow-md transition"
-            >
-              <FcGoogle size={24} className="mr-2" />
-              <span className="font-semibold text-gray-700">Sign in with Google</span>
-            </button>
-
-            {/* Phone Sign-In */}
-            {!showOTP ? (
-              <>
-                <div className="flex justify-center items-center bg-green-500 text-white w-12 h-12 rounded-full mx-auto mb-4">
-                  <BsTelephoneFill size={24} />
+                {/* OTP Authentication */}
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Enter Phone Number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button
+                        onClick={handleSendOtp}
+                        className="w-full mt-3 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-200"
+                    >
+                        Send OTP
+                    </button>
                 </div>
-                <label className="text-gray-600 font-semibold">Verify your phone number</label>
-                <PhoneInput country={"in"} value={phone} onChange={setPhone} className="mt-2" />
-                <button
-                  onClick={onSignup}
-                  className="bg-green-600 w-full text-white font-semibold rounded-lg py-2 mt-4 transition hover:bg-green-700 flex justify-center items-center"
-                >
-                  {loading && <CgSpinner size={20} className="animate-spin mr-2" />}
-                  Send OTP
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="flex justify-center items-center bg-blue-500 text-white w-12 h-12 rounded-full mx-auto mb-4">
-                  <BsFillShieldLockFill size={24} />
+
+                <div className="mb-6">
+                    <input
+                        type="text"
+                        placeholder="Enter OTP"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <button
+                        onClick={handleVerifyOtp}
+                        className="w-full mt-3 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200"
+                    >
+                        Verify OTP
+                    </button>
                 </div>
-                <label className="text-gray-600 font-semibold">Enter OTP</label>
-                <OtpInput
-                  value={otp}
-                  onChange={setOtp}
-                  OTPLength={6}
-                  otpType="number"
-                  className="mt-2"
-                />
-                <button
-                  onClick={onOTPVerify}
-                  className="bg-blue-600 w-full text-white font-semibold rounded-lg py-2 mt-4 transition hover:bg-blue-700 flex justify-center items-center"
-                >
-                  {loading && <CgSpinner size={20} className="animate-spin mr-2" />}
-                  Verify OTP
-                </button>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </section>
-  );
+
+                {/* Google Sign-In */}
+                <div className="flex justify-center mb-6">
+                    <button
+                        onClick={handleGoogleSignIn}
+                        className="flex items-center justify-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+                    >
+                        <span className="mr-2">Sign in with Google</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            className="w-5 h-5"
+                        >
+                            <path
+                                d="M9.197 3.333c0-.707-.057-1.32-.173-1.878H5.84v3.561h1.864c-1.246 2.455-3.61 2.253-4.275 1.726V5.6h-2.88v6.243h2.87v-3.38c0-2.517 1.825-3.494 3.773-3.494 2.085 0 3.384 1.215 3.384 3.351v3.389h-2.886c0 0 .116-1.003 1.29-2.226s1.122-.228 1.122-.228"
+                            />
+                        </svg>
+                    </button>
+                </div>
+
+                {user && (
+                    <div className="mt-4 text-center">
+                        <h3 className="text-xl font-semibold text-gray-800">
+                            Welcome, {user.name}
+                        </h3>
+                        <img
+                            src={user.picture}
+                            alt="User Profile"
+                            className="mx-auto rounded-full mt-3 w-32 h-32 object-cover"
+                        />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
-export default Home;
+export default App;

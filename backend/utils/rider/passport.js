@@ -1,6 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const riderModel = require("../../models/rider/rider.model");
+const { sendWelcomeEmail } = require("./sendWelcomeMail");
 
 passport.use(new GoogleStrategy(
     {
@@ -25,6 +26,7 @@ passport.use(new GoogleStrategy(
                     oAuthId: profile.id,
                     isVerified: true // OAuth users are typically verified
                 });
+                await sendWelcomeEmail(user.email,user.fullName.firstName);
             }
             return done(null, user);
         } catch (error) {
