@@ -12,7 +12,8 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const riderModel = require("./models/rider/rider.model");
 const riderController = require("./controllers/rider/rider.controller");
 const twilio = require("twilio");
-
+// captain
+const captainRoutes = require('./routes/captain/captain.routes')
 
 
 // Initialize Express app
@@ -54,7 +55,8 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 });
 
-app.use("/users", riderRoutes); // riders mounted with /users
+app.use("/riders", riderRoutes); // riders mounted with /riders
+app.use("/captains",captainRoutes); // captains mounted with /captains
 
 // Google OAuth routes
 app.get("/auth/google", passport.authenticate(
@@ -98,5 +100,8 @@ app.post("/verify-otp", async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
+
+
+
 
 module.exports = app;

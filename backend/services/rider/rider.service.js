@@ -12,7 +12,7 @@ module.exports.createUser = async ({ firstName, lastName, email, phone, password
         fullName: { firstName, lastName },
         email: email || null,
         phone: phone || null,
-        isVerified: false, // Default verification status
+        isVerified: false, 
     };
 
     if (oAuthId && oAuthProvider) {
