@@ -1,7 +1,23 @@
 const { body, validationResult } = require("express-validator");
-const captainModel = require("../../../models/captainModel/captainModel.model");
+const captainModel = require("../../../models/captain/captain.model");
 
 const registerValidation = [
+  // First name validation (required, enforce length)
+  body("fullName.firstName")
+    .notEmpty()
+    .withMessage("First name is required")
+    .trim()
+    .isLength({ min: 3 })
+    .withMessage("First name must be at least 3 characters long."),
+
+  // Last name validation (required, enforce length)
+  body("fullName.lastName")
+    .notEmpty()
+    .withMessage("Last name is required")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Last name must be at least 1 characters long."),
+
   // Email validation
   body("email")
     .isEmail()
@@ -111,26 +127,19 @@ const registerValidation = [
 
   // Ride types supported validation
   body("rideTypeSupported")
-    .isArray({ min: 1 })
-    .withMessage("At least one ride type must be supported")
-    .custom((value) => {
-      const validRideTypes = [
-        "economy",
-        "premium",
-        "luxury",
-        "shared",
-        "auto",
-        "bikeTaxi",
-      ];
-      const invalidRideTypes = value.filter(
-        (type) => !validRideTypes.includes(type)
-      );
-      if (invalidRideTypes.length > 0) {
-        throw new Error(`Invalid ride types: ${invalidRideTypes.join(", ")}`);
-      }
-      return true;
-    }),
-
+  .custom((value) => {
+    const validRideTypes = ["economy", "premium", "luxury", "shared", "auto", "bikeTaxi"];
+    // Normalize to array if a single string is provided
+    const rideTypes = Array.isArray(value) ? value : [value];
+    if (rideTypes.length === 0) {
+      throw new Error("At least one ride type must be supported");
+    }
+    const invalidRideTypes = rideTypes.filter((type) => !validRideTypes.includes(type));
+    if (invalidRideTypes.length > 0) {
+      throw new Error(`Invalid ride types: ${invalidRideTypes.join(", ")}`);
+    }
+    return true;
+  }),
   // Optional fields
   body("isPetFriendly")
     .optional()
@@ -147,4 +156,4 @@ const registerValidation = [
   },
 ];
 
-module.exports = registerValidation;
+module.exports = {registerValidation};

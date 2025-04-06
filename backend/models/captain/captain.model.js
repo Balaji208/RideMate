@@ -3,25 +3,41 @@ const bcrypt = require("bcryptjs")
 
 const captainSchema = new mongoose.Schema(
   {
-    // Driver's email (unique, lowercase for consistency)
+    fullName: {
+      firstName: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: function (value) {
+            return !value || (value && value.length >= 3); // Allow empty but enforce min length if provided
+          },
+          message: "First name must be at least 3 characters long.",
+        },
+      },
+      lastName: {
+        type: String,
+        trim: true,
+        validate: {
+          validator: function (value) {
+            return !value || (value && value.length >= 1); // Allow empty but enforce min length if provided
+          },
+          message: "Last name must be at least 1 characters long.",
+        },
+      },
+    },
+    // Driver's email (optional, can be populated from Google)
     email: {
       type: String,
-      required: [true, "Email is required"],
-      unique: true,
       lowercase: true,
       trim: true,
       match: [
         /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
         "Please provide a valid email address",
       ],
+      sparse: true, // Allows null values while enforcing uniqueness
+      
     },
-    password: {
-      type: String,
-      required: function() { return this.oAuthProvider === "email"; }, 
-      minlength: [8, "Password must be at least 8 characters long."],
-      select: false
-  },
-    // Driver's phone number (with country code, e.g., +919876543210)
+    // Driver's phone number (required for all authentication methods)
     phone: {
       type: String,
       required: [true, "Phone number is required"],
@@ -31,17 +47,16 @@ const captainSchema = new mongoose.Schema(
         /^\+[1-9]\d{1,14}$/,
         "Phone number must be in E.164 format (e.g., +919876543210)",
       ],
+      
     },
-
-    // Unique driver ID (e.g., "DRV123456789")
+    // Unique driver ID (e.g., "DRV12345")
     driverId: {
       type: String,
       required: [true, "Driver ID is required"],
       unique: true,
       trim: true,
-      match: [/^DRV\d{9}$/, "Driver ID must be in the format DRV12345"],
+      match: [/^DRV\d{8}$/, "Driver ID must be in the format DRV12345678"],
     },
-
     // Driver's license number (unique)
     licenseNumber: {
       type: String,
@@ -51,10 +66,8 @@ const captainSchema = new mongoose.Schema(
       minlength: [5, "License number must be at least 5 characters long"],
       maxlength: [20, "License number cannot exceed 20 characters"],
     },
-
     // Vehicle details
     vehicle: {
-      // Vehicle type (e.g., "Toyota Camry", "Auto Rickshaw", "Yamaha FZ")
       type: {
         type: String,
         required: [true, "Vehicle type is required"],
@@ -72,7 +85,6 @@ const captainSchema = new mongoose.Schema(
           message: "Invalid vehicle type",
         },
       },
-      // Vehicle number (e.g., registration/plate number)
       vehicleNumber: {
         type: String,
         required: [true, "Vehicle number is required"],
@@ -83,14 +95,12 @@ const captainSchema = new mongoose.Schema(
           "Vehicle number must be 5-15 characters long and contain only letters, numbers, or hyphens",
         ],
       },
-      // Vehicle color
       color: {
         type: String,
         required: [true, "Vehicle color is required"],
         trim: true,
         maxlength: [20, "Vehicle color cannot exceed 20 characters"],
       },
-      // Vehicle capacity (number of passengers)
       capacity: {
         type: Number,
         required: [true, "Vehicle capacity is required"],
@@ -98,8 +108,7 @@ const captainSchema = new mongoose.Schema(
         max: [20, "Vehicle capacity cannot exceed 20"],
       },
     },
-
-    // Documents (URLs to uploaded files, e.g., on Firebase Storage or S3)
+    // Documents (URLs to uploaded files)
     documents: {
       license: {
         type: String,
@@ -117,29 +126,25 @@ const captainSchema = new mongoose.Schema(
         trim: true,
       },
     },
-
-    // Verification status (e.g., after admin verifies documents)
+    // Verification status
     isVerified: {
       type: Boolean,
-      default: false,
+      default: true, // Set to true for Google and phone/OTP users (verified via Firebase)
     },
-
-    // Driver's rating (0 to 5)
+    // Driver's rating
     rating: {
       type: Number,
       default: 0,
       min: [0, "Rating cannot be less than 0"],
       max: [5, "Rating cannot be more than 5"],
     },
-
-    // Number of ratings (to calculate average rating)
+    // Number of ratings
     ratingCount: {
       type: Number,
       default: 0,
       min: [0, "Rating count cannot be negative"],
     },
-
-    // Ride types supported by the driver
+    // Ride types supported
     rideTypeSupported: [
       {
         type: String,
@@ -150,14 +155,12 @@ const captainSchema = new mongoose.Schema(
         required: [true, "Ride type is required"],
       },
     ],
-
     // Whether the driver allows pets
     isPetFriendly: {
       type: Boolean,
       default: false,
     },
-
-    // Driver's status (active/inactive)
+    // Driver's status
     status: {
       type: String,
       enum: {
@@ -166,14 +169,12 @@ const captainSchema = new mongoose.Schema(
       },
       default: "inactive",
     },
-
-    // Driver's availability (e.g., for ride assignment)
+    // Driver's availability
     isAvailable: {
       type: Boolean,
       default: false,
     },
-
-    // Current location (for real-time tracking and ride assignment)
+    // Current location
     currentLocation: {
       type: {
         type: String,
@@ -185,49 +186,51 @@ const captainSchema = new mongoose.Schema(
         default: [0, 0],
       },
     },
-
     // Date the driver joined
     joinedAt: {
       type: Date,
       default: Date.now,
     },
-
     // Total rides completed
     totalRides: {
       type: Number,
       default: 0,
       min: [0, "Total rides cannot be negative"],
     },
-
-    // Total earnings (in your app's currency)
+    // Total earnings
     totalEarnings: {
       type: Number,
       default: 0,
       min: [0, "Total earnings cannot be negative"],
     },
+    // OAuth ID from Firebase
     oAuthId: {
       type: String,
+      required: [true, "OAuth ID is required"],
       unique: true,
-      sparse: true // Allows null for non-OAuth users
-  },
-  oAuthProvider: {
+      sparse: true,
+      
+    },
+    // OAuth provider (Google or phone)
+    oAuthProvider: {
       type: String,
-      enum: ["google", "twitter", "facebook", "email"],
-      default: "email"
-  },
+      enum: ["google", "phone"],
+      required: [true, "OAuth provider is required"],
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
 );
 
-// Add indexes for frequently queried fields
-captainSchema.index({ driverId: 1 }); // Index for driverId
-captainSchema.index({ email: 1 }); // Index for email
-captainSchema.index({ phone: 1 }); // Index for phone
-captainSchema.index({ "vehicle.vehicleNumber": 1 }); // Index for vehicle number
-captainSchema.index({ currentLocation: "2dsphere" }); // Geospatial index for location
-
+// Add indexes
+captainSchema.index({ driverId: 1 });
+captainSchema.index({ email: 1 });
+captainSchema.index({ phone: 1 });
+captainSchema.index({ oAuthId: 1 });
+captainSchema.index({ licenseNumber: 1 });
+captainSchema.index({ "vehicle.vehicleNumber": 1 });
+captainSchema.index({ currentLocation: "2dsphere" });
 
 // generate auth token 
 captainSchema.methods.generateAuthToken = function(){

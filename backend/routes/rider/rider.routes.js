@@ -7,7 +7,7 @@ const { registerValidation } = require("../../middlewares/rider/validations/vali
 const { loginValidation } = require("../../middlewares/rider/validations/validations.loginValidation");
 
 // Email/Password Registration and Login
-router.post("/register", registerValidation, riderController.registerUser);
+router.post("/register", registerValidation, riderController.registerRider);
 
 router.post("/login",loginValidation, riderController.loginUser);
 

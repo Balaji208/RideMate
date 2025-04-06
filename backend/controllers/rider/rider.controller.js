@@ -1,31 +1,32 @@
 const riderModel = require("../../models/rider/rider.model");
-const userService = require("../../services/rider/rider.service");
+const riderService = require("../../services/rider/rider.service");
 const { validationResult } = require("express-validator");
 const { sendWelcomeEmail } = require("../../utils/rider/sendWelcomeMail");
 
 
-module.exports.registerUser = async (req, res, next) => {
+module.exports.registerRider = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
-  }
+  } 
 
   const { fullName, phone, email, password, oAuthId, oAuthProvider } = req.body;
   const { firstName, lastName } = fullName || {};
 
   try {
-    if (!phone && !email && !oAuthId) {
+    if (!phone  && !oAuthId) {
       return res
         .status(400)
         .json({ message: "Either phone, email, or OAuth ID is required." });
     }
 
     // Check if user already exists (by phone, email, or OAuth)
+    
     const existingUser = await riderModel.findOne({
-      $or: [{ phone }, { email }, { oAuthId }],
+      $or: [{ phone }, { oAuthId }],
     });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
+      return res.status(400).json({ message: "Rider already exists." });
     }
 
     let hashedPassword;
@@ -42,8 +43,8 @@ module.exports.registerUser = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid registration method." });
     }
 
-    // Create user
-    const user = await userService.createUser({
+    // Create rider
+    const user = await riderService.createRider({
       firstName,
       lastName,
       phone: phone || null,

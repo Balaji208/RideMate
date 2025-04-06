@@ -6,9 +6,9 @@ const generateUniqueDriverId = async () => {
 
   while (!isUnique) {
     // Generate a random 9-digit number (100000000 to 999999999)
-    const randomNum = Math.floor(100000000 + Math.random() * 900000000);
+    const randomNum = Math.floor(10000000 + Math.random() * 90000000);
     driverId = `${prefix}${randomNum}`;
-
+    console.log(driverId);
     // Check if the driverId already exists in the database
     const existingCaptain = await Captain.findOne({ driverId });
     if (!existingCaptain) {
