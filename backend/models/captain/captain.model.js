@@ -37,6 +37,14 @@ const captainSchema = new mongoose.Schema(
       sparse: true, // Allows null values while enforcing uniqueness
       
     },
+    password: {
+      type: String,
+      required: function () {
+        return this.oAuthProvider === "email"; // Required only for email/password
+      },
+      minlength: [6, "Password must be at least 6 characters long"],
+      select: false, // Don't return password by default
+    },
     // Driver's phone number (required for all authentication methods)
     phone: {
       type: String,
@@ -231,7 +239,7 @@ captainSchema.index({ oAuthId: 1 });
 captainSchema.index({ licenseNumber: 1 });
 captainSchema.index({ "vehicle.vehicleNumber": 1 });
 captainSchema.index({ currentLocation: "2dsphere" });
-
+ 
 // generate auth token 
 captainSchema.methods.generateAuthToken = function(){
   const token = jwt.sign({_id : this._id},process.env.JWT_SECRET,{expiresIn : '24h'});

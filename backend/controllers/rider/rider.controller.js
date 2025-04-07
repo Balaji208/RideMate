@@ -147,6 +147,7 @@ module.exports.sendOtp = async (req, res) => {
     const verification = await otpService.sendOtp(phone);
     res.json({ success: true, status: verification.status });
   } catch (error) {
+    console.log(error);``
     res.status(500).json({ success: false, message: error.message });
   }
 };

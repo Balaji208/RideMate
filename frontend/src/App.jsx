@@ -1,13 +1,16 @@
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import AllRoutes from "./routes/AllRoutes";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import { HeroUIProvider } from "@heroui/react";
 function App() {
   return (
     <>
       <BrowserRouter>
-        <AllRoutes />
-        <ToastContainer />
+        <HeroUIProvider>
+          <AllRoutes />
+          <ToastContainer />
+        </HeroUIProvider>
       </BrowserRouter>
     </>
   );

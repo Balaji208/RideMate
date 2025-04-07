@@ -5,6 +5,9 @@ const generateUniqueDriverId = require("../../utils/captain/generateUniqueId");
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
  
 module.exports.createCaptain = async ({
+    firstname,
+    lastname,
+    password,
     email,
     phone,
     licenseNumber,
@@ -34,20 +37,7 @@ module.exports.createCaptain = async ({
       !rideTypeSupported ||
       rideTypeSupported.length === 0
     ) {
-      console.log("From Service.js : ",email,
-        phone,
-        licenseNumber,
-        type,
-        vehicleNumber,
-        color,
-        capacity,
-        license,
-        vehicleRegistration,
-        insurance,
-        rideTypeSupported,
-        isPetFriendly,
-        oAuthId,
-        oAuthProvider,)
+      
       throw new Error("Invalid registration details. All required fields must be provided.");
     }
   
@@ -91,7 +81,12 @@ module.exports.createCaptain = async ({
   
     // Construct captainData
     const captainData = {
+      fullname :{
+        firstname,
+        lastname
+      },
       email: email || null,
+      password,
       phone,
       driverId,
       licenseNumber,

@@ -1,1 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+
+
+@font-face {
+    font-family: 'Uber Move';
+    src: url('/fonts/UberMove-Light.woff2') format('woff2'),
+         url('/fonts/UberMove-Light.woff') format('woff'),
+         url('/fonts/UberMove-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Uber Move';
+    src: url('/fonts/UberMove-Regular.woff2') format('woff2'),
+         url('/fonts/UberMove-Regular.woff') format('woff'),
+         url('/fonts/UberMove-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Uber Move';
+    src: url('/fonts/UberMove-Medium.woff2') format('woff2'),
+         url('/fonts/UberMove-Medium.woff') format('woff'),
+         url('/fonts/UberMove-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Uber Move';
+    src: url('/fonts/UberMove-Bold.woff2') format('woff2'),
+         url('/fonts/UberMove-Bold.woff') format('woff'),
+         url('/fonts/UberMove-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'Uber Move', sans-serif;
+  }
+  .inter-font {
+    font-family: 'Inter', sans-serif;
+  }
