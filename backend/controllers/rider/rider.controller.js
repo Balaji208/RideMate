@@ -29,16 +29,12 @@ module.exports.registerRider = async (req, res, next) => {
       return res.status(400).json({ message: "Rider already exists." });
     }
 
-    let hashedPassword;
-    if (password) {
-      hashedPassword = await riderModel.hashPassword(password);
-    }
-
+    
     // Determine authentication type
     const isOAuth = Boolean(oAuthId);
     const isEmailPassword = Boolean(email && password);
     const isPhoneOTP = Boolean(phone && !email && !oAuthId);
-
+    console.log(isEmailPassword);
     if (!isOAuth && !isEmailPassword && !isPhoneOTP) {
       return res.status(400).json({ message: "Invalid registration method." });
     }
@@ -49,7 +45,7 @@ module.exports.registerRider = async (req, res, next) => {
       lastName,
       phone: phone || null,
       email: email || null,
-      password: hashedPassword || null,
+      password: password,
       oAuthId: oAuthId || null,
       oAuthProvider: isOAuth ? oAuthProvider || "google" : null,
     });
@@ -82,10 +78,10 @@ module.exports.loginUser = async (req, res, next) => {
           message: "Use your OAuth provider to log in or reset your password.",
         });
     }
-
+    console.log(user);
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid password" });
     }
 
     const token = user.generateAuthToken();

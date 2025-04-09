@@ -46,7 +46,7 @@ const riderSchema = new mongoose.Schema(
         match: [/^\+[1-9]\d{1,14}$/, "Phone number must be in E.164 format (e.g., +919876543210)"],
         index: true,
         sparse : true
-      },
+      }, 
       password: {
         type: String,
         required: function () {
@@ -132,13 +132,29 @@ const riderSchema = new mongoose.Schema(
     }
     next();
   });
+  riderSchema.pre("save", async function (next) {
+    console.log("Pre-save hook triggered. Password:", this.password, "OAuthProvider:", this.oAuthProvider);
+    if (this.isModified("password") && this.password && this.oAuthProvider === "email" && !this.password.startsWith("$2b$")) {
+      console.log("Hashing password...");
+      this.password = await bcrypt.hash(this.password, 10);
+      console.log("Hashed password:", this.password);
+    }
+    next();
+  });
 riderSchema.methods.generateAuthToken = function () {
     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
 
 riderSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
-}
+  // console.log("Input password:", password);         // plaintext user input
+  // console.log("Stored hash:", this.password);       // hashed value from DB
+
+  const isMatch = await bcrypt.compare(password, this.password);
+  // console.log("Match result:", isMatch);            // true or false
+
+  return isMatch;
+};
+
 
 riderSchema.statics.hashPassword = async function (password) {
     return await bcrypt.hash(password, 10);

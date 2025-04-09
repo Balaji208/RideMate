@@ -1,4 +1,5 @@
 import React from "react";
+
 import { motion } from "framer-motion";
 import { Calendar, Clock, X } from "lucide-react";
 import PlanImg from "/uber-illustration-2.png";

@@ -7,10 +7,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <HeroUIProvider>
+        
           <AllRoutes />
           <ToastContainer />
-        </HeroUIProvider>
       </BrowserRouter>
     </>
   );

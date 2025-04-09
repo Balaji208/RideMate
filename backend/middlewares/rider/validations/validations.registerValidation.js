@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 const riderModel = require('../../../models/rider/rider.model')
 const registerValidation = [
     // Email validation (required for email OTP)
-    body("email")
+    body("email") 
       .custom((value, { req }) => {
         if (req.body.oAuthProvider === "email" && !value) {
           throw new Error("Email is required for email OTP authentication");
@@ -23,7 +23,7 @@ const registerValidation = [
         }
         return true;
       }),
-  
+      
     // Phone number validation (required for phone OTP)
     body("phone")
       .custom((value, { req }) => {
@@ -67,7 +67,9 @@ const registerValidation = [
         }
         return true;
       }),
-  
+      body("password").if(body("oAuthId").not().exists()).isLength({ min: 6 }).withMessage(
+        "Password must be at least 6 characters long."
+      ),
     // OAuth provider validation (required, restricted to email/phone)
     body("oAuthProvider")
       .notEmpty()
