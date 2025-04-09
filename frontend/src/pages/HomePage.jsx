@@ -3,6 +3,12 @@ import { NavLink } from "react-router-dom";
 import HomeNavBar from "../components/HomeNavBar";
 import HeroSection from "../components/rider/HeroSection";
 import Suggestions from "../components/rider/Suggestions";
+import ReserveRide from "../components/rider/ReserveRide";
+import AboutBusiness from "../components/AboutBusiness";
+import AboutRental from "../components/AboutRental";
+import AboutCaptain from "../components/AboutCaptain";
+import Footer from "../components/Footer";
+import AboutRider from "../components/AboutRider";
 const HomePage = () => {
 
 
@@ -14,8 +20,17 @@ const HomePage = () => {
         <HeroSection />
 
         {/* Sugesstions Field */}
+
         <Suggestions/>
+
+        {/* Reserve Ride */}
+        <AboutRider/>
+        <ReserveRide/>
+        <AboutCaptain />
+        <AboutBusiness />
+        <AboutRental />
       </div>
+      <Footer/>
     </>
   );
 };
