@@ -129,9 +129,15 @@ const registerValidation = [
   body("rideTypeSupported")
   .custom((value) => {
     const validRideTypes = ["economy", "premium", "luxury", "shared", "auto", "bikeTaxi"];
-    // Normalize to array if a single string is provided
-    const rideTypes = Array.isArray(value) ? value : [value];
-    if (rideTypes.length === 0) {
+    let rideTypes = value;
+    if (typeof value === "string") {
+      try {
+        rideTypes = JSON.parse(value); // Handle stringified array
+      } catch (e) {
+        rideTypes = [value]; // Fallback to single value
+      }
+    }
+    if (!Array.isArray(rideTypes) || rideTypes.length === 0) {
       throw new Error("At least one ride type must be supported");
     }
     const invalidRideTypes = rideTypes.filter((type) => !validRideTypes.includes(type));

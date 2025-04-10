@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import { CarFront ,Package , History} from 'lucide-react';
 import carRental from '/Rider/icons/car-rentals.png'
+import profile from '/profile.jpeg'
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-3xl ">
+    <nav className="bg-white  ">
       {/* Desktop Navigation */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -37,9 +39,9 @@ const Navbar = () => {
                 
               Activity
             </button>
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer">
               <span className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                👤
+                <img src={profile} alt="" className='rounded-full' />
               </span>
               <svg
                 className="w-4 h-4 ml-1 text-black"
@@ -90,8 +92,10 @@ const Navbar = () => {
                 />
               </svg>
             </button>
+
           </div>
         </div>
+        <div className="line h-1 w-full bg-gray-200"></div>
       </div>
 
       {/* Mobile Menu */}

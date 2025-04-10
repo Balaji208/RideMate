@@ -57,7 +57,7 @@ const LocationInput = ({
   };
 
   return (
-    <div className="relative mb-3">
+    <div className="relative mb-3 ">
       <div
         onClick={() => setIsOpen && setIsOpen(!isOpen)}
         className="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-300 focus-within:border-black cursor-pointer"

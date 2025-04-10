@@ -23,11 +23,11 @@ const RideRequestPanel = ({
 }) => {
   const currentRider = riders.find((rider) => rider.id === selectedRider);
   const [pickUpNowClicked, setPickUpNowClicked] = useState(false);
-
+  const [pickUpData,setPickupData] = useState('');
   return (
     <>
-      {pickUpNowClicked ? (
-        <div className="mx-4 w-full md:w-96 flex flex-col p-6 md:p-10 rounded-xl shadow-2xl z-10 max-h-[calc(100vh-64px)] overflow-y-auto">
+      {!pickUpNowClicked ? (
+        <div className=" md:mr-4 md:ml-8  w-full md:w-96 flex flex-col p-6 md:p-8 rounded-lg  md:shadow-2xl z-10 max-h-[calc(100vh-64px)] overflow-y-auto">
           <h1 className="text-2xl font-extrabold mb-6 text-black ">Get a ride</h1>
           <form>
             <LocationInput
@@ -58,7 +58,7 @@ const RideRequestPanel = ({
               addStop={handleAddStop}
             />
             <PickupToggle
-              pickUpData=""
+              pickUpData={pickUpData}
               onClick={() => setPickUpNowClicked(!pickUpNowClicked)}
             />
             <RiderSelection
@@ -66,8 +66,9 @@ const RideRequestPanel = ({
               currentRiderName={currentRider ? currentRider.name : "Me"}
             />
             <button
+             disabled={!pickupLocation?.trim() || !dropoffLocation?.trim()}
               type="button"
-              className="w-full py-3.5 bg-black text-white font-medium text-lg rounded-xl inter-font mt-4"
+              className="w-full py-3.5 bg-black text-white font-medium text-lg rounded-xl inter-font mt-4 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Search
             </button>
@@ -76,6 +77,8 @@ const RideRequestPanel = ({
       ) : (
         <ScheduledPickupForm
           setPickUpNowClicked={setPickUpNowClicked}
+          pickUpData = {pickUpData}
+          setPickUpData = {setPickupData}
           riders={riders}
           selectedRider={selectedRider}
           handleSwitchRiderClick={handleSwitchRiderClick}

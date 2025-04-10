@@ -3,7 +3,7 @@ import { User, X } from 'lucide-react';
 
 const SwitchRiderModal = ({ riders, onSelectRider, onNewRider, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-transparent flex items-center justify-center z-500">
       <div className="max-w-md w-full mx-auto bg-white rounded-xl shadow-xl" style={{ maxWidth: '480px' }}>
         <div className="p-4 flex justify-between items-center">
           <h3 className="inter-font text-xl font-bold">Switch rider</h3>

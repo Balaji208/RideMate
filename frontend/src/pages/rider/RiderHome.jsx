@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Navbar from '../../components/rider/Navbar';
 import { Clock, User, ChevronDown, Plus, X, Star, MapPin, Navigation } from 'lucide-react';
 import RideRequestPanel from '../../components/rider/RideRequestPanel';
-import MapContainer from '../../components/rider/MapContainer';
 import SwitchRiderModal from '../../components/rider/SwitchRiderModal';
 import NewRiderModal from '../../components/rider/NewRiderModal';
 import '../../styles/RiderHome.css'
+import RiderMapContainer from '../../components/rider/RiderMapContainer';
+
 
 const RiderHome = () => {
   const [isPickupOpen, setIsPickupOpen] = useState(false);
@@ -74,7 +75,7 @@ const RiderHome = () => {
   return (
     <div className="bg-white h-screen flex flex-col overflow-hidden">
       <Navbar />
-      <div className="flex flex-1 flex-col md:flex-row overflow-hidden">
+      <div className="flex flex-1 flex-col md:flex-row overflow-hidden mt-4">
         <RideRequestPanel
           pickupLocation={pickupLocation}
           setPickupLocation={setPickupLocation}
@@ -90,7 +91,7 @@ const RiderHome = () => {
           riders={riders}
           selectedRider={selectedRider}
         />
-        <MapContainer>
+        <RiderMapContainer pickupLocation={pickupLocation} setPickupLocation={setPickupLocation} dropoffLocation={dropoffLocation} setDropoffLocation={setDropoffLocation} >
           {isModalOpen && (
             <div
               className="fixed inset-0 bg-black opacity-20 z-30"
@@ -113,7 +114,7 @@ const RiderHome = () => {
               onClose={handleCloseModals}
             />
           )}
-        </MapContainer>
+        </RiderMapContainer>
       </div>
     </div>
   );

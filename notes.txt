@@ -1,0 +1,80 @@
+Sample format for bulk registration of captains:
+{
+      "fullName.firstName": "Sri",
+      "fullName.lastName": "Balaji",
+      "email": "sri.balaji@example.com",
+      "phone": "+911234567890",
+      "licenseNumber": "123456734",
+      "vehicle.type": "Sedan",
+      "vehicle.vehicleNumber": "TN47B6393",
+      "vehicle.color": "Red",
+      "vehicle.capacity": 4,
+      "documents.license": "https://drive.google.com/file/d/1XPCuOazKn-TUKVB2ouYJ7vgj_PuvTFab/view?usp=drive_link",
+      "documents.vehicleRegistration": "https://drive.google.com/file/d/1XPCuOazKn-TUKVB2ouYJ7vgj_PuvTFab/view?usp=drive_link",
+      "documents.insurance": "https://drive.google.com/file/d/1XPCuOazKn-TUKVB2ouYJ7vgj_PuvTFab/view?usp=drive_link",
+      "rideTypeSupported": "[\"economy\"]",
+      "isPetFriendly": "true",
+      "oAuthId": "1324",
+      "oAuthProvider": "phone"
+    }
+
+Pre-req script in postman:
+// Pre-request Script
+try {
+    const data = {
+        "fullName.firstName": pm.iterationData.get("fullName.firstName"),
+        "fullName.lastName": pm.iterationData.get("fullName.lastName"),
+        email: pm.iterationData.get("email"),
+        phone: pm.iterationData.get("phone"),
+        licenseNumber: pm.iterationData.get("licenseNumber"),
+        "vehicle.type": pm.iterationData.get("vehicle.type"),
+        "vehicle.vehicleNumber": pm.iterationData.get("vehicle.vehicleNumber"),
+        "vehicle.color": pm.iterationData.get("vehicle.color"),
+        "vehicle.capacity": parseInt(pm.iterationData.get("vehicle.capacity") || 0),
+        "documents.license": pm.iterationData.get("documents.license"),
+        "documents.vehicleRegistration": pm.iterationData.get("documents.vehicleRegistration"),
+        "documents.insurance": pm.iterationData.get("documents.insurance"),
+        rideTypeSupported: pm.iterationData.get("rideTypeSupported"),
+        isPetFriendly: pm.iterationData.get("isPetFriendly") === "true",
+        oAuthId: pm.iterationData.get("oAuthId"),
+        oAuthProvider: pm.iterationData.get("oAuthProvider")
+    };
+
+    // Log raw data for debugging
+    console.log("Raw Data:", data);
+
+    // Build nested structure
+    const requestBody = {
+        fullName: {
+            firstName: data["fullName.firstName"],
+            lastName: data["fullName.lastName"]
+        },
+        email: data.email,
+        phone: data.phone,
+        licenseNumber: data.licenseNumber,
+        vehicle: {
+            type: data["vehicle.type"],
+            vehicleNumber: data["vehicle.vehicleNumber"],
+            color: data["vehicle.color"],
+            capacity: data["vehicle.capacity"]
+        },
+        documents: {
+            license: data["documents.license"],
+            vehicleRegistration: data["documents.vehicleRegistration"],
+            insurance: data["documents.insurance"]
+        },
+        rideTypeSupported: JSON.parse(data.rideTypeSupported || "[]"), // Ensure valid array
+        isPetFriendly: data.isPetFriendly,
+        oAuthId: data.oAuthId,
+        oAuthProvider: data.oAuthProvider
+    };
+
+    // Log the constructed JSON
+    console.log("Request Body:", JSON.stringify(requestBody, null, 2));
+
+    pm.environment.set("requestBody", JSON.stringify(requestBody));
+} catch (error) {
+    console.error("Pre-request Script Error:", error);
+    pm.environment.set("requestBody", "{}"); // Fallback to avoid crash
+}
+Added 100 captains in db

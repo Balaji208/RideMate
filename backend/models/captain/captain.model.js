@@ -172,7 +172,7 @@ const captainSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["active", "inactive"],
+        values: ["active", "inactive","on-ride"],
         message: "Status must be either 'active' or 'inactive'",
       },
       default: "inactive",
@@ -274,6 +274,12 @@ captainSchema.methods.setAvailability = async function (isAvailable) {
   this.isAvailable = isAvailable;
   await this.save();
 };
+
+// Method to make driver active
+captainSchema.methods.setStatus = async function (status){
+  this.status = status;
+  await this.save();
+}
 
 // Method to add a rating
 captainSchema.methods.addRating = async function (newRating) {

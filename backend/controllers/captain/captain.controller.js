@@ -59,3 +59,10 @@ module.exports.registerCaptain = async (req, res, next) => {
     next(err);
   }
 };
+
+
+module.exports.getCaptain = async (req, res) => {
+  const captain = await captainModel.findOne({ driverId: req.params.driverId });
+  if (!captain) return res.status(404).json({ message: 'Captain not found' });
+  res.json(captain);
+};

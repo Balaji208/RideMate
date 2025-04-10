@@ -5,6 +5,8 @@ import ReservationTermsModal from "../../pages/rider/ReservationTermsModal";
 
 const ScheduledPickupForm = ({
   setPickUpNowClicked,
+  pickUpData,
+  setPickUpData,
   riders,
   selectedRider,
   handleSwitchRiderClick,
@@ -13,7 +15,6 @@ const ScheduledPickupForm = ({
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [timeOptions, setTimeOptions] = useState([]);
-  const [pickUpData, setPickUpData] = useState("");
   const [isTCOpen, setIsTCOpen] = useState(false);
 
   const generateTimeSlots = (filterCurrentTime = false) => {
@@ -97,7 +98,7 @@ const ScheduledPickupForm = ({
       hour12: true,
     });
     setPickUpData(formatted);
-    setPickUpNowClicked(true);
+    setPickUpNowClicked(false);
   };
 
   return (
@@ -105,7 +106,7 @@ const ScheduledPickupForm = ({
       <div className="flex flex-row justify-between items-center mb-6">
         <div
           className="cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors"
-          onClick={() => setPickUpNowClicked(true)}
+          onClick={() => setPickUpNowClicked(false)}
         >
           <ArrowLeft size={20} />
         </div>
@@ -179,7 +180,7 @@ const ScheduledPickupForm = ({
         See terms
       </button>
       <button
-        className="inter-font mt-4 rounded-lg bg-black text-white h-12 w-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+        className="inter-font mt-2 rounded-lg bg-black text-white h-14 cursor-pointer w-full font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
         onClick={handlePickUpForm}
         disabled={!selectedDate || !selectedTime}
       >
