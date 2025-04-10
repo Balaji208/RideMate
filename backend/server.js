@@ -1,29 +1,35 @@
 // server.js
-const http = require("http");
-const { Server } = require("socket.io");
-const app = require("./app"); // Import the Express app
-const {simulateDriverMovement} = require("./utils/captain/simulateLocation");
+const http = require('http');
+const { Server } = require('socket.io');
+const app = require('./app');
+const {simulateDriverMovement} = require('./utils/captain/simulateLocation');
 
-const port = process.env.PORT || 5000; // Changed to 5000 to match previous setup
-
-// Create HTTP server
+const port = process.env.PORT || 3001;
 const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: 'http://localhost:5173' } });
 
-// Initialize Socket.IO
-const io = new Server(server, { cors: { origin: "http://localhost:5173" } });
+let captainSimulations;
 
-// Socket.IO connection
-io.on("connection", (socket) => {
-  console.log("Client connected:", socket.id);
-  socket.on("disconnect", () => console.log("Client disconnected:", socket.id));
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+
+  // Listen for user's initial location
+  socket.on('userLocation', (userLocation) => {
+    console.log('Received user location:', userLocation);
+    if (captainSimulations) {
+      captainSimulations.forEach((sim) => clearInterval(sim)); // Stop existing simulations
+    }
+    simulateDriverMovement(io, userLocation)
+      .then((simulations) => {
+        captainSimulations = simulations;
+        console.log(`Started simulations for ${simulations.size} captains`);
+      })
+      .catch((err) => console.error('Simulation error:', err.message));
+  });
+
+  socket.on('disconnect', () => console.log('Client disconnected:', socket.id));
 });
 
-// Start driver simulation
-simulateDriverMovement(io).catch((err) => {
-  console.error("Failed to start driver simulation:", err.message);
-});
-
-// Start the server
 server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });

@@ -35,7 +35,7 @@ module.exports.registerCaptain = async (req, res, next) => {
       firstname,
       lastname,
       email,
-      password : hashedPassword,
+      password: hashedPassword,
       phone,
       licenseNumber,
       type,
@@ -60,9 +60,38 @@ module.exports.registerCaptain = async (req, res, next) => {
   }
 };
 
+module.exports.getCaptains = async (req, res) => {
+  try {
+    const { lat, lng } = req.query; // User's location from query params
+    if (!lat || !lng) {
+      return res.status(400).json({ message: "User location (lat, lng) required" });
+    }
 
-module.exports.getCaptain = async (req, res) => {
-  const captain = await captainModel.findOne({ driverId: req.params.driverId });
-  if (!captain) return res.status(404).json({ message: 'Captain not found' });
-  res.json(captain);
+    const userLat = parseFloat(lat);
+    const userLng = parseFloat(lng);
+    if (isNaN(userLat) || isNaN(userLng)) {
+      return res.status(400).json({ message: "Invalid latitude or longitude" });
+    }
+
+    // 10 km radius in radians (Earth radius = 6371 km)
+    const radiusInRadians = 10 / 6371;
+
+    const captains = await captainModel.find({
+      isAvailable: true,
+      currentLocation: {
+        $geoWithin: {
+          $centerSphere: [[userLng, userLat], radiusInRadians], // [lng, lat] order for MongoDB
+        },
+      },
+    });
+
+    if (captains.length === 0) {
+      return res.status(404).json({ message: "No captains available within 10 km" });
+    }
+
+    res.json(captains); // Returns array of captains within 10 km
+  } catch (error) {
+    console.error("Error fetching captains:", error);
+    res.status(500).json({ message: "Error fetching captains", error: error.message });
+  }
 };

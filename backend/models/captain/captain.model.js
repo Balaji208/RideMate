@@ -239,6 +239,7 @@ captainSchema.index({ oAuthId: 1 });
 captainSchema.index({ licenseNumber: 1 });
 captainSchema.index({ "vehicle.vehicleNumber": 1 });
 captainSchema.index({ currentLocation: "2dsphere" });
+captainSchema.index({ isAvailable: 1 });
  
 // generate auth token 
 captainSchema.methods.generateAuthToken = function(){
