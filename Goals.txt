@@ -1,0 +1,36 @@
+1. Captain finding Feature
+	Criteria for "Best Captain"
+	Proximity: Closest to pickup (from QuadTree or DriverLocationHT).
+	Availability: isAvailable: true.
+	Rating: Highest from Captain model (3–5 stars).
+	Vehicle Match: Matches requested vehicleType.
+
+
+5️⃣ Ride Request Flow
+Customer sends ride request.
+
+Aggregator server finds nearby drivers (from QuadTree).
+
+Ranks drivers (e.g., by ratings, proximity).
+
+Sends ride request to top 3 drivers.
+
+First to accept gets the ride; others get cancelled.
+
+If none respond → next 3 drivers are contacted.
+
+
+
+Detailed Flow :
+Suggest / Clarrify my Approach :
+1. Validating Captain Schema to make sure it is robust enough to proceed with further goals
+2.Generate arround 20K Captains in to my MongoDB.
+3.Simulate the location of 20K captains .
+4. Create a QuadTree where each node repreasents a grid of city
+Lets focus now on chennai  city , The root node of QuadTree is Whole grid of chennai city further descendent nodes are grid divided based on untill a node (grid)reached 100 Captain Locations.
+5.Build a DriverLocation hash table in which captain updates  location for every 5 secs and the QuadTree is updated for every 25 secs for those change in value in Hash Table
+6.Based of location in QuadTree the captain location will be sent to system and once rider chooses for a ride , best captains within the rider location grid and its 8 neighbouring grid was found
+7. Top 3 captains will be assigned per rider based on proximity,ratings etc and waits for captain to accept the ride.
+8.If None of the captain accepts the ride , then next top 3 will be assigned and it continues
+
+2. Fare Prediction Feature

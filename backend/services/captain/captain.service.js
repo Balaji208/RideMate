@@ -5,8 +5,9 @@ const generateUniqueDriverId = require("../../utils/captain/generateUniqueId");
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
  
 module.exports.createCaptain = async ({
-    firstname,
-    lastname,
+    firstName,
+    lastName,
+    gender,
     password,
     email,
     phone,
@@ -15,9 +16,10 @@ module.exports.createCaptain = async ({
     vehicleNumber,
     color,
     capacity,
-    license,
-    vehicleRegistration,
-    insurance,
+    city,
+    // license,
+    // vehicleRegistration,
+    // insurance,
     rideTypeSupported,
     isPetFriendly,
     oAuthId,
@@ -31,9 +33,9 @@ module.exports.createCaptain = async ({
       !vehicleNumber ||
       !color ||
       !capacity ||
-      !license ||
-      !vehicleRegistration ||
-      !insurance ||
+      // !license ||
+      // !vehicleRegistration ||
+      // !insurance ||
       !rideTypeSupported ||
       rideTypeSupported.length === 0
     ) {
@@ -41,15 +43,6 @@ module.exports.createCaptain = async ({
       throw new Error("Invalid registration details. All required fields must be provided.");
     }
   
-    // Validate email if provided
-    if (email && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      throw new Error("Please provide a valid email address");
-    }
-  
-    // Validate phone format
-    if (!/^\+[1-9]\d{1,14}$/.test(phone)) {
-      throw new Error("Phone number must be in E.164 format (e.g., +919876543210)");
-    }
   
     // Validate vehicle type
     const validVehicleTypes = ["Sedan", "SUV", "Hatchback", "Auto Rickshaw", "Bike", "Van", "Luxury Car"];
@@ -81,10 +74,11 @@ module.exports.createCaptain = async ({
   
     // Construct captainData
     const captainData = {
-      fullname :{
-        firstname,
-        lastname
+      fullName :{
+        firstName,
+        lastName
       },
+      gender,
       email: email || null,
       password,
       phone,
@@ -96,11 +90,7 @@ module.exports.createCaptain = async ({
         color,
         capacity,
       },
-      documents: {
-        license,
-        vehicleRegistration,
-        insurance,
-      },
+      city,
       rideTypeSupported,
       isPetFriendly: isPetFriendly || false,
       joinedAt: Date.now(),

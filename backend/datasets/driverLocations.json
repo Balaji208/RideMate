@@ -1,0 +1,102 @@
+[
+    {
+        "DRIVER_ID": "DRIVER_ID_001",
+        "lat": 13.1,
+        "long": 80.2,
+        "rideTypeSupported": ["economy"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.8,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_002",
+        "lat": 13.101,
+        "long": 80.201,
+        "rideTypeSupported": ["economy", "premium"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.5,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_003",
+        "lat": 13.099,
+        "long": 80.199,
+        "rideTypeSupported": ["premium"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.9,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_004",
+        "lat": 13.102,
+        "long": 80.198,
+        "rideTypeSupported": ["economy", "shared"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.2,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_005",
+        "lat": 13.098,
+        "long": 80.202,
+        "rideTypeSupported": ["auto"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.7,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_006",
+        "lat": 13.103,
+        "long": 80.197,
+        "rideTypeSupported": ["bikeTaxi"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.0,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_007",
+        "lat": 13.097,
+        "long": 80.203,
+        "rideTypeSupported": ["luxury"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.6,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_008",
+        "lat": 13.104,
+        "long": 80.196,
+        "rideTypeSupported": ["shared"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.3,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_009",
+        "lat": 13.12,
+        "long": 80.22,
+        "rideTypeSupported": ["economy"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.4,
+        "city": "chennai"
+      },
+      {
+        "DRIVER_ID": "DRIVER_ID_010",
+        "lat": 13.08,
+        "long": 80.18,
+        "rideTypeSupported": ["premium"],
+        "isAvailable": true,
+        "status": "active",
+        "rating": 4.1,
+        "city": "chennai"
+      }
+    ]

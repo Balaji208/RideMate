@@ -1,8 +1,8 @@
 // server.js
 const http = require('http');
 const { Server } = require('socket.io');
-const app = require('./app');
-const {simulateDriverMovement} = require('./utils/captain/simulateLocation');
+const app = require('../app');
+const {simulateDriverMovement} = require('../utils/captain/simulateLocation');
 
 const port = process.env.PORT || 3001;
 const server = http.createServer(app);
