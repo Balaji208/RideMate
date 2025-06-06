@@ -1,9 +1,19 @@
 import React from 'react';
 import { User, X } from 'lucide-react';
 
+import { useDispatch } from 'react-redux';
+import { setIsSwitchRiderOpen } from '../../redux/rider/slices/locationSlice';
+import { setRider } from '../../redux/rider/slices/rideSlice';
+
 const SwitchRiderModal = ({ riders, onSelectRider, onNewRider, onClose }) => {
+  const dispatch = useDispatch();
+
+  const handleSelect = (id) => {
+    onSelectRider(id);
+    dispatch(setRider(riders.find(rider => rider.id === id).name));
+  };
   return (
-    <div className="fixed inset-0 bg-transparent flex items-center justify-center z-500">
+    <div className="fixed inset-0 bg-transparent flex items-center justify-center z-1000">
       <div className="max-w-md w-full mx-auto bg-white rounded-xl shadow-xl" style={{ maxWidth: '480px' }}>
         <div className="p-4 flex justify-between items-center">
           <h3 className="inter-font text-xl font-bold">Switch rider</h3>
@@ -16,7 +26,7 @@ const SwitchRiderModal = ({ riders, onSelectRider, onNewRider, onClose }) => {
             <div
               key={rider.id}
               className="flex items-center py-3 px-2 cursor-pointer"
-              onClick={() => onSelectRider(rider.id)}
+              onClick={() => handleSelect(rider.id)}
             >
               <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
                 {rider.id !== 'me' ? (
@@ -43,7 +53,7 @@ const SwitchRiderModal = ({ riders, onSelectRider, onNewRider, onClose }) => {
         <div className="p-4">
           <button
             className="inter-font w-full py-3 bg-black text-white font-medium rounded-md hover:bg-gray-800 transition"
-            onClick={onClose}
+           onClick={() => { onClose(); dispatch(setIsSwitchRiderOpen(false)); }}
           >
             Done
           </button>

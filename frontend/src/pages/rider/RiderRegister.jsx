@@ -7,7 +7,6 @@ import EyeOpenIcon from "/Rider/icons/eye-open.png";
 import EyeCloseIcon from "/Rider/icons/eye-close.png";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-import RiderContext from "../../context/rider/RiderContext";
 
 const RiderRegister = () => {
   const [showPassword, setShowPassword] = useState(false);

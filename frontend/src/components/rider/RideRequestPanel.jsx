@@ -1,84 +1,52 @@
-import React, { useEffect, useState } from "react";
-import LocationInput from "./LocationInput";
-import StopField from "./StopField";
-import RiderSelection from "./RiderSelection";
-import PickupToggle from "./PickupToggle";
+import React from "react";
+import RideForm from "./RideForm";
+import RideSelection from "./RideSelection";
+import FindCaptains from "./FindCaptains";
 import ScheduledPickupForm from "./ScheduledPickupForm";
-import { ChevronDown, Clock } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setIsNarrow,
+  setIsRequested,
+  setPickUpNowClicked,
+  setIsDriverMatched
+} from "../../redux/rider/slices/locationSlice";
+import MatchedDriverInfo from "./MatchedDriverInfo";
 
 const RideRequestPanel = ({
-  pickupLocation,
-  setPickupLocation,
-  isPickupOpen,
-  setIsPickupOpen,
-  stops,
-  handleAddStop,
-  handleRemoveStop,
-  handleStopChange,
-  dropoffLocation,
-  setDropoffLocation,
-  handleSwitchRiderClick,
   riders,
   selectedRider,
+  handleSwitchRiderClick,
 }) => {
-  const currentRider = riders.find((rider) => rider.id === selectedRider);
-  const [pickUpNowClicked, setPickUpNowClicked] = useState(false);
-  const [pickUpData,setPickupData] = useState('');
+  const dispatch = useDispatch();
+
+  const { isNarrow, isRequested, pickUpNowClicked , isDriverMatched } = useSelector(
+    (state) => state.location
+  );
+
   return (
     <>
       {!pickUpNowClicked ? (
-        <div className=" md:mr-4 md:ml-8  w-full md:w-96 flex flex-col p-6 md:p-8 rounded-lg  md:shadow-2xl z-10 max-h-[calc(100vh-64px)] overflow-y-auto">
-          <h1 className="text-2xl font-extrabold mb-6 text-black ">Get a ride</h1>
-          <form>
-            <LocationInput
-              icon={<div className="w-2 h-2 rounded-full bg-black"></div>}
-              placeholder="Pickup location"
-              value={pickupLocation}
-              setValue={setPickupLocation}
-              onChange={(e) => setPickupLocation(e.target.value)}
-              isOpen={isPickupOpen}
-              setIsOpen={setIsPickupOpen}
+        <div
+          className={`md:mr-4 md:ml-8 w-full ${
+            isNarrow ? "md:w-[400px]" : "md:w-[600px]"
+          } flex flex-col p-6 md:p-8 rounded-lg md:shadow-2xl max-h-[calc(100vh-64px)] overflow-y-auto`}
+        >
+          {isNarrow ? (
+            <RideForm
+              riders={riders}
+              selectedRider={selectedRider}
+              handleSwitchRiderClick={handleSwitchRiderClick}
             />
-            {stops.map((stop) => (
-              <StopField
-                key={stop.id}
-                stop={stop}
-                onChange={(value) => handleStopChange(stop.id, value)}
-                onRemove={() => handleRemoveStop(stop.id)}
-              />
-            ))}
-            <LocationInput
-              icon={<div className="w-2 h-2 rounded-full bg-black"></div>}
-              placeholder="Dropoff location"
-              value={dropoffLocation}
-              setValue={setDropoffLocation}
-              onChange={(e) => setDropoffLocation(e.target.value)}
-              isOpen={false} // No dropdown for dropoff in this view
-              setIsOpen={() => {}}
-              addStop={handleAddStop}
-            />
-            <PickupToggle
-              pickUpData={pickUpData}
-              onClick={() => setPickUpNowClicked(!pickUpNowClicked)}
-            />
-            <RiderSelection
-              onClick={handleSwitchRiderClick}
-              currentRiderName={currentRider ? currentRider.name : "Me"}
-            />
-            <button
-             disabled={!pickupLocation?.trim() || !dropoffLocation?.trim()}
-              type="button"
-              className="w-full py-3.5 bg-black text-white font-medium text-lg rounded-xl inter-font mt-4 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              Search
-            </button>
-          </form>
+          ) : !isRequested ? (
+            <RideSelection />
+          ) : (
+            !isDriverMatched ? 
+            <FindCaptains /> :
+            <MatchedDriverInfo/>
+          )}
         </div>
       ) : (
         <ScheduledPickupForm
-          setPickUpNowClicked={setPickUpNowClicked}
-          pickUpData = {pickUpData}
-          setPickUpData = {setPickupData}
           riders={riders}
           selectedRider={selectedRider}
           handleSwitchRiderClick={handleSwitchRiderClick}

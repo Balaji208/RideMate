@@ -1,0 +1,230 @@
+[{
+  "info": {
+    "name": "RideMate LocationServer",
+    "_postman_id": "a2b3c4d5-e6f7-4a8b-9c0d-1e2f3a4b5c6d",
+    "description": "Collection for testing RideMate locationServer endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Setup - Clear Redis",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response has success true', () => {",
+              "  const response = pm.response.json();",
+              "  pm.expect(response.success).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3002/clear-redis",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3002",
+          "path": ["clear-redis"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /location/captain",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response has success true', () => {",
+              "  const response = pm.response.json();",
+              "  pm.expect(response.success).to.be.true;",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"DRIVER_ID\": \"DRIVER_ID_001\",\n  \"lat\": 13.1,\n  \"long\": 80.2,\n  \"rideTypeSupported\": [\"rider\"],\n  \"isAvailable\": true,\n  \"status\": \"active\",\n  \"rating\": 4.8,\n  \"city\": \"chennai\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3002/location/captain",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3002",
+          "path": ["location", "captain"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /location/rider",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response has success and data', () => {",
+              "  const response = pm.response.json();",
+              "  pm.expect(response.success).to.be.true;",
+              "  pm.expect(response.data).to.equal('Rider location updated successfully');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"riderId\": \"user123\",\n  \"lat\": 13.1,\n  \"long\": 80.2,\n  \"city\": \"chennai\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3002/location/rider",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3002",
+          "path": ["location", "rider"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /ride/request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response has success and requestId', () => {",
+              "  const response = pm.response.json();",
+              "  pm.expect(response.success).to.be.true;",
+              "  pm.expect(response.requestId).to.be.a('string');",
+              "  pm.environment.set('requestId', response.requestId);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"riderId\": \"user123\",\n  \"lat\": 13.1,\n  \"long\": 80.2,\n  \"rideType\": \"rider\",\n  \"city\": \"chennai\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3002/ride/request",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3002",
+          "path": ["ride", "request"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /ride/match/:requestId",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response has matched status', () => {",
+              "  const response = pm.response.json();",
+              "  pm.expect(response.status).to.equal('matched');",
+              "  pm.expect(response.data.requestId).to.equal(pm.environment.get('requestId'));",
+              "  pm.expect(response.data.riderId).to.equal('user123');",
+              "  pm.expect(response.data.DRIVER_ID).to.equal('DRIVER_ID_001');",
+              "  pm.expect(response.data.eta).to.be.a('number');",
+              "  pm.expect(response.data.driverLat).to.be.a('string');",
+              "  pm.expect(response.data.driverLong).to.be.a('string');",
+              "  pm.expect(response.data.rating).to.equal(4.8);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3002/ride/match/{{requestId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3002",
+          "path": ["ride", "match", "{{requestId}}"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3002",
+      "type": "string"
+    }
+  ]
+}]

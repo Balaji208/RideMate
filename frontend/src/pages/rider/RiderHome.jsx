@@ -4,17 +4,15 @@ import { Clock, User, ChevronDown, Plus, X, Star, MapPin, Navigation } from 'luc
 import RideRequestPanel from '../../components/rider/RideRequestPanel';
 import SwitchRiderModal from '../../components/rider/SwitchRiderModal';
 import NewRiderModal from '../../components/rider/NewRiderModal';
-import '../../styles/RiderHome.css'
+import '../../styles/RiderHome.css';
 import RiderMapContainer from '../../components/rider/RiderMapContainer';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setIsPickupOpen, setIsSwitchRiderOpen, setIsNewRiderOpen } from '../../redux/rider/slices/locationSlice';
+import { addStop, removeStop, updateStop } from '../../redux/rider/slices/rideSlice';
 
 const RiderHome = () => {
-  const [isPickupOpen, setIsPickupOpen] = useState(false);
-  const [stops, setStops] = useState([]);
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [dropoffLocation, setDropoffLocation] = useState('');
-  const [isSwitchRiderOpen, setIsSwitchRiderOpen] = useState(false);
-  const [isNewRiderOpen, setIsNewRiderOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { isPickupOpen, isSwitchRiderOpen, isNewRiderOpen } = useSelector(state => state.location);
   const [riders, setRiders] = useState([
     { id: 'me', name: 'Me', selected: true },
     { id: 'sample1', name: 'Sample1 123', selected: false },
@@ -24,23 +22,23 @@ const RiderHome = () => {
   const [selectedRider, setSelectedRider] = useState('me');
 
   const handlePickupClick = () => {
-    setIsPickupOpen(!isPickupOpen);
+    dispatch(setIsPickupOpen(!isPickupOpen));
   };
 
   const handleAddStop = () => {
-    setStops([...stops, { id: Date.now(), location: '' }]);
+    dispatch(addStop());
   };
 
   const handleRemoveStop = (id) => {
-    setStops(stops.filter((stop) => stop.id !== id));
+    dispatch(removeStop());
   };
 
   const handleStopChange = (id, value) => {
-    setStops(stops.map((stop) => (stop.id === id ? { ...stop, location: value } : stop)));
+    dispatch(updateStop({ id, location: value }));
   };
 
   const handleSwitchRiderClick = () => {
-    setIsSwitchRiderOpen(true);
+    dispatch(setIsSwitchRiderOpen(true));
   };
 
   const handleSelectRider = (id) => {
@@ -49,8 +47,8 @@ const RiderHome = () => {
   };
 
   const handleNewRiderClick = () => {
-    setIsSwitchRiderOpen(false);
-    setIsNewRiderOpen(true);
+    dispatch(setIsSwitchRiderOpen(false));
+    dispatch(setIsNewRiderOpen(true));
   };
 
   const handleAddRider = () => {
@@ -59,17 +57,16 @@ const RiderHome = () => {
       setRiders([...riders, { id: riderId, name: `${newRider.firstName} ${newRider.lastName}`, selected: true }]);
       setSelectedRider(riderId);
       setNewRider({ firstName: '', lastName: '', phone: '', countryCode: 'IN' });
-      setIsNewRiderOpen(false);
-      setIsSwitchRiderOpen(true);
+      dispatch(setIsNewRiderOpen(false));
+      dispatch(setIsSwitchRiderOpen(true));
     }
   };
 
   const handleCloseModals = () => {
-    setIsSwitchRiderOpen(false);
-    setIsNewRiderOpen(false);
+    dispatch(setIsSwitchRiderOpen(false));
+    dispatch(setIsNewRiderOpen(false));
   };
 
-  // Determine if any modal is open to show the overlay
   const isModalOpen = isSwitchRiderOpen || isNewRiderOpen;
 
   return (
@@ -77,21 +74,11 @@ const RiderHome = () => {
       <Navbar />
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden mt-4">
         <RideRequestPanel
-          pickupLocation={pickupLocation}
-          setPickupLocation={setPickupLocation}
-          isPickupOpen={isPickupOpen}
-          setIsPickupOpen={setIsPickupOpen}
-          stops={stops}
-          handleAddStop={handleAddStop}
-          handleRemoveStop={handleRemoveStop}
-          handleStopChange={handleStopChange}
-          dropoffLocation={dropoffLocation}
-          setDropoffLocation={setDropoffLocation}
-          handleSwitchRiderClick={handleSwitchRiderClick}
           riders={riders}
           selectedRider={selectedRider}
+          handleSwitchRiderClick={handleSwitchRiderClick}
         />
-        <RiderMapContainer pickupLocation={pickupLocation} setPickupLocation={setPickupLocation} dropoffLocation={dropoffLocation} setDropoffLocation={setDropoffLocation} >
+        <RiderMapContainer>
           {isModalOpen && (
             <div
               className="fixed inset-0 bg-black opacity-20 z-30"

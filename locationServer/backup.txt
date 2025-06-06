@@ -1,0 +1,634 @@
+const express = require("express");
+const redis = require("redis");
+const h3 = require("h3-js");
+const axios = require("axios");
+const dotenv = require("dotenv");
+const { v4: uuidv4 } = require("uuid");
+const Queue = require("bull");
+const winston = require("winston");
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+
+const PORT = 3002;
+
+// Logger setup
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "location-server.log" }),
+  ],
+});
+
+// Redis Client
+const redisClient = redis.createClient({
+  url : "redis://localhost:6379",
+  socket :{
+    reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
+  }
+
+});
+redisClient.on("error", (err) => logger.error("Redis Error:", { error: err.message }));
+redisClient.connect().then(() => logger.info("Redis Connected"));
+
+
+// Bull queue for batch matching
+const matchingQueue = new Queue("ride-matching",{
+  redis : { host : "localhost" , port : 6379},
+})
+
+// H3 Queue (in-memory)
+const h3Queue = [];
+setInterval(async()=>{
+  if(!h3Queue.length) return;
+
+  const updates = h3Queue.splice(0,h3Queue.length);
+  for(const { DRIVER_ID,long,lat,oldCell,city} of updates){
+    try{
+      const newCell = h3.latLngToCell(lat,long,8);
+      logger.info("H3 Sync",{DRIVER_ID , newCell});
+      if(newCell!==oldCell){
+          if(oldCell){
+            await redisClient.sRem(`captains:${city}:${oldCell}`,DRIVER_ID);
+            logger.info("Removed from old cell",{DRIVER_ID,oldCell});
+          }
+          await redisClient.sAdd(`captains:${city}:${newCell}`,DRIVER_ID);
+          logger.info("Added to new cell",{DRIVER_ID,newCell});
+      }
+    }
+    catch(err){
+      logger.info("H3 Sync Error",{DRIVER_ID,error: err.message});
+    }
+  }
+},30*1000);
+
+
+
+// Force H3 Sync
+async function forceH3Sync(){
+  const updates = h3Queue.splice(0,h3Queue.length);
+  for(const { DRIVER_ID,long,lat,oldCell,city} of updates){
+    try{
+      const newCell = h3.latLngToCell(lat,long,8);
+      logger.info("Force Sync",{DRIVER_ID , newCell});
+      if(newCell!==oldCell){
+          if(oldCell){
+            await redisClient.sRem(`captains:${city}:${oldCell}`,DRIVER_ID);
+            logger.info("Removed from old cell",{DRIVER_ID,oldCell});
+          }
+          await redisClient.sAdd(`captains:${city}:${newCell}`,DRIVER_ID);
+          logger.info("Added to new cell",{DRIVER_ID,newCell});
+      }
+    }
+    catch(err){
+      logger.info("Force Sync Error",{DRIVER_ID,error: err.message});
+    }
+  }
+
+}
+
+
+// POST /location/captain
+app.post("/location/captain",async (req,res)=>{
+  try{
+    const{
+      DRIVER_ID,
+      long,
+      lat,
+      rideTypeSupported,
+      isAvailable,
+      status,
+      rating,
+      city,
+    } = req.body;
+    logger.info("POST Captain",{body:req.body});
+
+    if(
+    !DRIVER_ID ||
+    typeof lat !== "number" ||
+    typeof long !== "number" ||
+    !city
+  ){
+    logger.warn("Validation Failed : Missing fields",{body : req.body});
+    return res.status(400).json({error :"Missing required fields"});
+  }
+  const cityLower = city.toLowerCase();
+  if (!["chennai", "coimbatore", "madurai", "salem"].includes(cityLower)) {
+      logger.warn("Validation failed: Invalid city", { city });
+      return res.status(400).json({ error: "Invalid city" });
+    }
+    if (
+      cityLower === "chennai" &&
+      (lat < 12.9 || lat > 13.3 || long < 80.0 || long > 80.4)
+    ) {
+      logger.warn("Validation failed: Invalid Chennai coordinates", { lat, long });
+      return res.status(400).json({ error: "Invalid Chennai coordinates" });
+    }
+
+    if (
+      !Array.isArray(rideTypeSupported) ||
+      rideTypeSupported.length === 0 ||
+      typeof isAvailable !== "boolean" ||
+      status !== "active" ||
+      typeof rating !== "number" ||
+      rating < 1 ||
+      rating > 5
+    ) {
+      logger.warn("Validation failed: Invalid captain details", { body: req.body });
+      return res.status(400).json({ error: "Invalid captain details" });
+    }
+
+    const pipeline = redisClient.multi();
+
+    pipeline.geoAdd(`captains:${cityLower}`,{
+      longitude : long,
+      latitude : lat,
+      member : DRIVER_ID
+    });
+
+    pipeline.hSet(`captains:${cityLower}:${DRIVER_ID}`,{
+      rideTypeSupported :JSON.stringify(rideTypeSupported),
+      isAvailable : isAvailable ? "true" : "false",
+      status,
+      rating: rating.toString,
+      lastUpdated : Date.now().toString()
+    });
+
+    await pipeline.exec();
+    logger.info("Redis updated",{DRIVER_ID,geoAdd : true,hSet : true});
+    const oldCell = h3Queue.find((u)=> u.DRIVER_ID === DRIVER_ID)?.oldCell || null;
+    h3Queue.push({DRIVER_ID,lat,long,oldCell,city:cityLower});
+    await forceH3Sync();
+
+    res.json({success : true});
+  }
+    catch(err){
+       logger.error("Captain Location Update Error",{error : err.message});
+       res.status(500).json({error : "Internal server error"});
+    }
+
+});
+
+
+// POST /location/rider
+
+app.post("/location/rider",async (req,res)=>{
+  try{
+    const { riderId, long, lat, city } = req.body;
+    logger.info("POST Rider", { body: req.body });
+    if (
+      !riderId ||
+      typeof lat !== "number" ||
+      typeof long !== "number" ||
+      !city
+    ) {
+      logger.warn("Validation failed: Missing fields", { body: req.body });
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const cityLower = city.toLowerCase();
+    if (!["chennai", "coimbatore", "madurai", "salem"].includes(cityLower)) {
+      logger.warn("Validation failed: Invalid city", { city });
+      return res.status(400).json({ error: "Invalid city" });
+    }
+
+    if (
+      cityLower === "chennai" &&
+      (lat < 12.9 || lat > 13.3 || long < 80.0 || long > 80.4)
+    ) {
+      logger.warn("Validation failed: Invalid Chennai coordinates", { lat, long });
+      return res.status(400).json({ error: "Invalid Chennai coordinates" });
+    }
+
+    await redisClient.geoAdd(`riders:${cityLower}`, {
+      longitude: long,
+      latitude: lat,
+      member: riderId,
+    });
+
+    logger.info("GEOADD riders", { riderId, cityLower, lat, long });
+
+    res.json({ success: true, data: "Rider location updated successfully" });
+
+
+  }
+  catch(err){
+    logger.error("Rider Location Update Error", { error: err.message });
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// POST /ride/request
+
+app.post("/ride/request",async (req,res)=>{
+  try{
+    const { riderId, lat, long, rideType, city } = req.body;
+    logger.info("POST Ride Request", { body: req.body });
+
+    if (
+      !riderId ||
+      typeof lat !== "number" ||
+      typeof long !== "number" ||
+      !rideType ||
+      !city
+    ) {
+      logger.warn("Validation failed: Missing fields", { body: req.body });
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const cityLower = city.toLowerCase();
+    if (!["chennai", "coimbatore", "madurai", "salem"].includes(cityLower)) {
+      logger.warn("Validation failed: Invalid city", { city });
+      return res.status(400).json({ error: "Invalid city" });
+    }
+
+    if (
+      cityLower === "chennai" &&
+      (lat < 12.9 || lat > 13.3 || long < 80.0 || long > 80.4)
+    ) {
+      logger.warn("Validation failed: Invalid Chennai coordinates", { lat, long });
+      return res.status(400).json({ error: "Invalid Chennai coordinates" });
+    }
+
+    if (
+      !["economy", "premium", "shared", "auto", "bikeTaxi", "luxury"].includes(rideType)
+    ) {
+      logger.warn("Validation failed: Invalid ride type", { rideType });
+      return res.status(400).json({ error: "Invalid ride type" });
+    }
+
+    const requestId = uuidv4();
+    const request = {
+      requestId,
+      riderId,
+      lat,
+      long,
+      rideType,
+      city: cityLower,
+      timestamp: Date.now(),
+    };
+
+    await redisClient.rPush(`ride:requests:${cityLower}`, JSON.stringify(request));
+    logger.info("Ride request queued", { requestId, riderId, cityLower });
+
+    res.json({ success: true, requestId });
+  }
+  catch(err){
+    logger.error("Ride Request Error", { error: err.message });
+    res.status(500).json({ error: "Internal server error" });
+  }
+})
+
+// GET /ride/match/:requestId
+app.get("/ride/match/:requestId", async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    logger.info("GET Ride Match", { requestId });
+
+    const match = await redisClient.get(`match:${requestId}`);
+    if (!match) {
+      logger.info("Match not found or pending", { requestId });
+      return res.json({ status: "pending" });
+    }
+
+    logger.info("Match found", { requestId, match });
+    res.json({ status: "matched", data: JSON.parse(match) });
+  } catch (err) {
+    logger.error("Ride Match Error", { requestId, error: err.message });
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+// GET /captains/nearby (unchanged)
+app.get("/captains/nearby", async (req, res) => {
+  try {
+    const { lat, long, type, city, riderId } = req.query;
+    logger.info("GET Nearby", { query: req.query });
+
+    const cityLower = city?.toLowerCase();
+    if (!lat || !long || !type || !cityLower || !riderId) {
+      logger.warn("Validation failed: Missing query params", { query: req.query });
+      return res.status(400).json({ error: "Missing required query parameters" });
+    }
+
+    const latNum = parseFloat(lat),
+      longNum = parseFloat(long);
+    if (isNaN(latNum) || isNaN(longNum)) {
+      logger.warn("Validation failed: Invalid coordinates", { lat, long });
+      return res.status(400).json({ error: "Invalid coordinates" });
+    }
+
+    if (!["chennai", "coimbatore", "madurai", "salem"].includes(cityLower)) {
+      logger.warn("Validation failed: Invalid city", { city });
+      return res.status(400).json({ error: "Invalid city" });
+    }
+
+    if (
+      cityLower === "chennai" &&
+      (latNum < 12.9 || latNum > 13.3 || longNum < 80.0 || longNum > 80.4)
+    ) {
+      logger.warn("Validation failed: Invalid Chennai coordinates", { lat: latNum, long: longNum });
+      return res.status(400).json({ error: "Invalid Chennai coordinates" });
+    }
+
+    if (
+      !["economy", "premium", "shared", "auto", "bikeTaxi", "luxury"].includes(type)
+    ) {
+      logger.warn("Validation failed: Invalid ride type", { type });
+      return res.status(400).json({ error: "Invalid ride type" });
+    }
+
+    const riderCell = h3.latLngToCell(latNum, longNum, 8);
+    logger.info("Rider Cell", { riderCell });
+    const cells = h3.gridDisk(riderCell, 2);
+    logger.info("Cells", { cells: cells.join(",") });
+
+    let driverIds = [];
+    for (const cell of cells) {
+      const ids = await redisClient.sMembers(`captains:${cityLower}:${cell}`);
+      logger.info("Cell members", { cell, ids });
+      driverIds.push(...ids);
+    }
+    driverIds = [...new Set(driverIds)];
+    logger.info("Driver IDs", { driverIds });
+    if (!driverIds.length) {
+      logger.info("No drivers found");
+      return res.json([]);
+    }
+
+    const captains = [];
+    for (const DRIVER_ID of driverIds.slice(0, 50)) {
+      const details = await redisClient.hGetAll(`captains:${cityLower}:${DRIVER_ID}`);
+      logger.info("Captain details", { DRIVER_ID, details });
+      if (
+        details.isAvailable === "true" &&
+        details.status === "active" &&
+        JSON.parse(details.rideTypeSupported || "[]").includes(type)
+      ) {
+        const pos = await redisClient.geoPos(`captains:${cityLower}`, DRIVER_ID);
+        if (pos && pos[0]) {
+          captains.push({
+            DRIVER_ID,
+            lat: pos[0].latitude,
+            long: pos[0].longitude,
+            rating: parseFloat(details.rating || "1"),
+          });
+        }
+      }
+    }
+    logger.info("Filtered Captains", { captains });
+    if (!captains.length) {
+      logger.info("No captains after filtering");
+      return res.json([]);
+    }
+
+    const captainsWithETA = [];
+    const GEOAPIFY_KEY = process.env.GEOAPIFY_API_KEY || "your_geoapify_key";
+    logger.info("GeoApify Key", { key: GEOAPIFY_KEY });
+    for (const captain of captains.slice(0, 20)) {
+      const cacheKey = `captains:${cityLower}:eta:${riderId}:${captain.DRIVER_ID}`;
+      let eta = await redisClient.get(cacheKey);
+      if (!eta) {
+        try {
+          logger.info("GeoApify Request", {
+            DRIVER_ID: captain.DRIVER_ID,
+            driverLat: captain.lat,
+            driverLong: captain.long,
+            riderLat: latNum,
+            riderLong: longNum,
+          });
+          const response = await axios.get(
+            `https://api.geoapify.com/v1/routing?waypoints=${captain.lat},${captain.long}|${latNum},${longNum}&mode=drive&traffic=approximated&type=short&apiKey=${GEOAPIFY_KEY}`
+          );
+          if (response?.data?.features?.length > 0) {
+            eta = Math.round(response.data.features[0].properties.time / 60);
+            logger.info("ETA calculated", { DRIVER_ID: captain.DRIVER_ID, eta });
+            await redisClient.setEx(cacheKey, 60, eta.toString());
+          } else {
+            logger.error("GeoApify Error: Empty response", { DRIVER_ID: captain.DRIVER_ID });
+            continue;
+          }
+        } catch (err) {
+          logger.error("GeoApify Error", { DRIVER_ID: captain.DRIVER_ID, error: err.message });
+          continue;
+        }
+      } else {
+        eta = parseInt(eta);
+        logger.info("Cached ETA", { DRIVER_ID: captain.DRIVER_ID, eta });
+      }
+      if (eta <= 15) {
+        captainsWithETA.push({ ...captain, eta });
+      }
+    }
+    logger.info("Captains with ETA", { captainsWithETA });
+    if (!captainsWithETA.length) {
+      logger.info("No captains with valid ETA");
+      return res.json([]);
+    }
+
+    captainsWithETA.sort((a, b) => a.eta - b.eta);
+    const topCaptains = captainsWithETA
+      .slice(0, 10)
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 3);
+
+    logger.info("Response", { topCaptains });
+    res.json(
+      topCaptains.map((c) => ({
+        DRIVER_ID: c.DRIVER_ID,
+        lat: c.lat,
+        long: c.long,
+        eta: c.eta,
+        rating: c.rating,
+      }))
+    );
+  } catch (err) {
+    logger.error("Nearby Captains Error", { error: err.message });
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+// Batch matching processor
+matchingQueue.process(async () => {
+  try {
+    const city = "chennai"; // Focus on Chennai for now
+    const cityLower = city.toLowerCase();
+
+    // Fetch ride requests
+    const requestsRaw = await redisClient.lRange(`ride:requests:${cityLower}`, 0, -1);
+    if (!requestsRaw.length) {
+      logger.info("No ride requests in batch");
+      return;
+    }
+
+    const requests = requestsRaw
+      .map((r) => JSON.parse(r))
+      .filter((r) => Date.now() - r.timestamp <= 3000); // 3s window
+    await redisClient.lTrim(`ride:requests:${cityLower}`, requestsRaw.length, -1);
+    logger.info("Batch started", { requestCount: requests.length });
+
+    if (!requests.length) {
+      logger.info("No fresh requests in batch");
+      return;
+    }
+
+    // Collect drivers
+    const driverIds = new Set();
+    for (const request of requests) {
+      const riderCell = h3.latLngToCell(request.lat, request.long, 8);
+      const cells = h3.gridDisk(riderCell, 2);
+      for (const cell of cells) {
+        const ids = await redisClient.sMembers(`captains:${cityLower}:${cell}`);
+        ids.forEach((id) => driverIds.add(id));
+      }
+    }
+    logger.info("Driver IDs collected", { driverCount: driverIds.size });
+
+    if (!driverIds.size) {
+      logger.info("No drivers available for batch");
+      return;
+    }
+
+    const drivers = [];
+    const now = Date.now();
+    for (const DRIVER_ID of driverIds) {
+      const details = await redisClient.hGetAll(`captains:${cityLower}:${DRIVER_ID}`);
+      if (
+        details.isAvailable === "true" &&
+        details.status === "active" &&
+        parseInt(details.lastUpdated || 0) >= now - 30000 // Active in last 30s
+      ) {
+        const pos = await redisClient.geoPos(`captains:${cityLower}`, DRIVER_ID);
+        if (pos && pos[0]) {
+          drivers.push({
+            DRIVER_ID,
+            lat: pos[0].latitude,
+            long: pos[0].longitude,
+            rideTypeSupported: JSON.parse(details.rideTypeSupported || "[]"),
+            rating: parseFloat(details.rating || "1"),
+          });
+        }
+      }
+    }
+    logger.info("Drivers filtered", { driverCount: drivers.length });
+
+    if (!drivers.length) {
+      logger.info("No eligible drivers after filtering");
+      return;
+    }
+
+    // Compute ETAs and generate pairs
+    const pairs = [];
+    const GEOAPIFY_KEY = process.env.GEOAPIFY_API_KEY || "your_geoapify_key";
+    for (const request of requests) {
+      for (const driver of drivers) {
+        if (!driver.rideTypeSupported.includes(request.rideType)) continue;
+
+        const cacheKey = `captains:${cityLower}:eta:${request.riderId}:${driver.DRIVER_ID}`;
+        let eta = await redisClient.get(cacheKey);
+        if (!eta) {
+          try {
+            const response = await axios.get(
+              `https://api.geoapify.com/v1/routing?waypoints=${driver.lat},${driver.long}|${request.lat},${request.long}&mode=drive&traffic=approximated&type=short&apiKey=${GEOAPIFY_KEY}`,
+              { timeout: 2000 }
+            );
+            if (response?.data?.features?.length > 0) {
+              eta = Math.round(response.data.features[0].properties.time / 60);
+              await redisClient.setEx(cacheKey, 60, eta.toString());
+              logger.info("ETA calculated", { requestId: request.requestId, DRIVER_ID: driver.DRIVER_ID, eta });
+            } else {
+              logger.warn("GeoApify empty response", { requestId: request.requestId, DRIVER_ID: driver.DRIVER_ID });
+              continue;
+            }
+          } catch (err) {
+            logger.warn("GeoApify fallback", { requestId: request.requestId, DRIVER_ID: driver.DRIVER_ID, error: err.message });
+            // Fallback: Straight-line distance (km) / 40 km/h
+            const dx = (driver.lat - request.lat) * 111; // Approx km per degree
+            const dy = (driver.long - request.long) * 111;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            eta = Math.round((distance / 40) * 60); // Convert to minutes
+          }
+        } else {
+          eta = parseInt(eta);
+          logger.info("Cached ETA", { requestId: request.requestId, DRIVER_ID: driver.DRIVER_ID, eta });
+        }
+
+        if (eta <= 15) {
+          pairs.push({ requestId: request.requestId, riderId: request.riderId, DRIVER_ID: driver.DRIVER_ID, eta, driver });
+        }
+      }
+    }
+    logger.info("Pairs generated", { pairCount: pairs.length });
+
+    // Greedy matching
+    pairs.sort((a, b) => a.eta - b.eta);
+    const matches = [];
+    const matchedRiders = new Set();
+    const matchedDrivers = new Set();
+
+    for (const pair of pairs) {
+      if (!matchedRiders.has(pair.riderId) && !matchedDrivers.has(pair.DRIVER_ID)) {
+        matches.push({
+          requestId: pair.requestId,
+          riderId: pair.riderId,
+          DRIVER_ID: pair.DRIVER_ID,
+          eta: pair.eta,
+          driverLat: pair.driver.lat,
+          driverLong: pair.driver.long,
+          rating: pair.driver.rating,
+        });
+        matchedRiders.add(pair.riderId);
+        matchedDrivers.add(pair.DRIVER_ID);
+      }
+    }
+    logger.info("Matches created", { matchCount: matches.length });
+
+    // Store matches and update driver availability
+    const pipeline = redisClient.multi();
+    for (const match of matches) {
+      pipeline.setEx(`match:${match.requestId}`, 300, JSON.stringify(match));
+      pipeline.hSet(`captains:${cityLower}:${match.DRIVER_ID}`, "isAvailable", "false");
+    }
+    await pipeline.exec();
+    logger.info("Matches stored and drivers updated", { matchCount: matches.length });
+
+    // Log unmatched riders
+    const unmatched = requests.filter((r) => !matchedRiders.has(r.riderId));
+    if (unmatched.length) {
+      logger.warn("Unmatched riders", { unmatched: unmatched.map((r) => r.riderId) });
+    }
+  } catch (err) {
+    logger.error("Batch Matching Error", { error: err.message });
+  }
+});
+
+// Schedule batch processing every 3 seconds
+setInterval(() => {
+  matchingQueue.add({}, { repeat: { every: 3000 } });
+}, 3000);
+
+// Clear Redis for testing
+app.get("/clear-redis", async (req, res) => {
+  try {
+    await redisClient.flushAll();
+    logger.info("Redis cleared");
+    res.json({ success: true });
+  } catch (err) {
+    logger.error("Clear Redis Error", { error: err.message });
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Health check
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+
+app.listen(PORT, () => logger.info(`Location Server on :${PORT}`));

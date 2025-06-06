@@ -3,12 +3,12 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import 'remixicon/fonts/remixicon.css'
 import App from "./App.jsx";
-import RiderContext from "./context/rider/RiderContext.jsx";
-
+import store from './redux/rider/store/store.jsx';
+import { Provider } from 'react-redux';
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RiderContext>
+      <Provider store={store}>
       <App />
-    </RiderContext>
+    </Provider>
   </StrictMode>
 );
