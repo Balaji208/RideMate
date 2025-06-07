@@ -64,7 +64,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/nearby", async (req, res) => {
-  try {
+try {
     const { lat, long, type, city, riderId } = req.query;
     logger.info("GET Nearby", { query: req.query });
 

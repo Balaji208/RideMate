@@ -73,6 +73,7 @@ router.post("/request", async (req, res) => {
       city: cityLower,
       timestamp: Date.now(),
     };
+    console.log(" Added : ",request);
 
     await matchingQueue.add(request);
     logger.info("Ride request queued", { requestId, riderId, cityLower });

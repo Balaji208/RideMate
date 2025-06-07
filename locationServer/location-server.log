@@ -1,56 +1,881 @@
-{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-06T09:22:03.537Z"}
-{"level":"info","message":"Matching service started","timestamp":"2025-06-06T09:22:03.543Z"}
-{"level":"info","message":"Starting server setup","timestamp":"2025-06-06T09:22:03.546Z"}
-{"level":"info","message":"Loading express module","timestamp":"2025-06-06T09:22:03.546Z"}
-{"level":"info","message":"Configuring middleware","timestamp":"2025-06-06T09:22:03.547Z"}
-{"level":"info","message":"Mounting routes","timestamp":"2025-06-06T09:22:03.548Z"}
-{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-06T09:22:03.548Z"}
-{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-06T09:22:03.548Z"}
-{"level":"info","message":"Mounting /ride","timestamp":"2025-06-06T09:22:03.549Z"}
-{"level":"info","message":"Mounting /captains","timestamp":"2025-06-06T09:22:03.549Z"}
-{"level":"info","message":"Mounting /","timestamp":"2025-06-06T09:22:03.549Z"}
-{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-06T09:22:03.550Z"}
-{"level":"info","message":"Starting server","timestamp":"2025-06-06T09:22:03.550Z"}
-{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-06T09:22:03.553Z"}
-{"level":"info","message":"Redis Connected","timestamp":"2025-06-06T09:22:03.564Z"}
-{"level":"info","message":"Redis Connected","timestamp":"2025-06-06T09:22:03.573Z"}
-{"level":"info","message":"Redis cleared","timestamp":"2025-06-06T09:23:31.277Z"}
-{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-06T09:24:19.650Z"}
-{"body":{"city":"chennai","lat":13.0777,"long":80.2618,"riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-06T09:24:19.651Z"}
-{"cityLower":"chennai","lat":13.0777,"level":"info","long":80.2618,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-06T09:24:19.654Z"}
-{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-06T09:24:59.801Z"}
-{"body":{"city":"chennai","lat":13.0777,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-06T09:24:59.802Z"}
-{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","riderId":"user1","timestamp":"2025-06-06T09:24:59.809Z"}
-{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["548c2d9b-bf0a-4655-bb22-726896829695"],"timestamp":"2025-06-06T09:26:00.311Z"}
-{"level":"warn","message":"No drivers available","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","timestamp":"2025-06-06T09:26:00.357Z"}
-{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-06T09:26:25.749Z"}
-{"body":{"city":"chennai","lat":13.0213,"long":80.2418,"riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-06T09:26:25.749Z"}
-{"cityLower":"chennai","lat":13.0213,"level":"info","long":80.2418,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-06T09:26:25.751Z"}
-{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-06T09:26:43.095Z"}
-{"body":{"city":"chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-06T09:26:43.095Z"}
-{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","riderId":"user2","timestamp":"2025-06-06T09:26:43.098Z"}
-{"level":"info","message":"Handling GET /ride/match/:requestId","timestamp":"2025-06-06T09:27:11.839Z"}
-{"level":"info","message":"GET Ride Match","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","timestamp":"2025-06-06T09:27:11.840Z"}
-{"level":"info","match":"{\"status\":\"no_match\"}","message":"Match found","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","timestamp":"2025-06-06T09:27:11.845Z"}
-{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-06T09:27:22.406Z"}
-{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-06T09:27:22.410Z"}
-{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-06T09:27:22.410Z"}
-{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-06T09:27:22.411Z"}
-{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-06T09:27:22.415Z"}
-{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-06T09:27:22.416Z"}
-{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-06T09:27:22.416Z"}
-{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-06T09:27:22.418Z"}
-{"level":"info","message":"Handling GET /ride/match/:requestId","timestamp":"2025-06-06T09:27:25.624Z"}
-{"level":"info","message":"GET Ride Match","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","timestamp":"2025-06-06T09:27:25.624Z"}
-{"level":"info","match":"{\"status\":\"no_match\"}","message":"Match found","requestId":"548c2d9b-bf0a-4655-bb22-726896829695","timestamp":"2025-06-06T09:27:25.625Z"}
-{"level":"info","message":"Handling GET /ride/match/:requestId","timestamp":"2025-06-06T09:27:38.126Z"}
-{"level":"info","message":"GET Ride Match","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:38.126Z"}
-{"level":"info","message":"Match not found or pending","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:38.128Z"}
-{"level":"info","message":"Handling GET /ride/match/:requestId","timestamp":"2025-06-06T09:27:41.866Z"}
-{"level":"info","message":"GET Ride Match","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:41.866Z"}
-{"level":"info","message":"Match not found or pending","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:41.867Z"}
-{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["943e4170-374a-4a6d-9172-14740bbdc165"],"timestamp":"2025-06-06T09:27:43.100Z"}
-{"level":"warn","message":"No drivers available","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:43.114Z"}
-{"level":"info","message":"Handling GET /ride/match/:requestId","timestamp":"2025-06-06T09:27:47.921Z"}
-{"level":"info","message":"GET Ride Match","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:47.921Z"}
-{"level":"info","match":"{\"status\":\"no_match\"}","message":"Match found","requestId":"943e4170-374a-4a6d-9172-14740bbdc165","timestamp":"2025-06-06T09:27:47.922Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:01:35.865Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:01:35.870Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:01:35.872Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:01:35.872Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:01:35.872Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:01:35.873Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:01:35.873Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:01:35.873Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:01:35.874Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:01:35.874Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:01:35.874Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:01:35.874Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:01:35.874Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:01:35.877Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:01:35.895Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:01:35.903Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:01:41.757Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:01:41.758Z"}
+{"cityLower":"chennai","lat":13.075,"level":"info","long":80.26,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-07T08:01:41.762Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:01:53.637Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:01:53.638Z"}
+{"cityLower":"chennai","lat":13.05,"level":"info","long":80.25,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:01:53.639Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:02:00.341Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"rideType":"economy","riderId":"user4"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:02:00.341Z"}
+{"cityLower":"chennai","lat":13.058,"level":"info","long":80.15,"message":"GEOADD riders","riderId":"user4","timestamp":"2025-06-07T08:02:00.344Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:02:10.718Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"rideType":"economy","riderId":"user4"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:02:10.719Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"1dde7d1f-7be6-45da-897e-220be4eebf10","riderId":"user4","timestamp":"2025-06-07T08:02:10.736Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:02:17.311Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:02:17.311Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"e64c80ef-a2a0-4ce0-b11b-614b9429f1b2","riderId":"user2","timestamp":"2025-06-07T08:02:17.315Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["1dde7d1f-7be6-45da-897e-220be4eebf10","e64c80ef-a2a0-4ce0-b11b-614b9429f1b2"],"timestamp":"2025-06-07T08:02:17.448Z"}
+{"level":"warn","message":"No drivers available","requestId":"1dde7d1f-7be6-45da-897e-220be4eebf10","timestamp":"2025-06-07T08:02:17.546Z"}
+{"level":"warn","message":"No drivers available","requestId":"e64c80ef-a2a0-4ce0-b11b-614b9429f1b2","timestamp":"2025-06-07T08:02:17.548Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:02:22.729Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:02:22.729Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"1677f0cb-3ddf-4b19-9f48-56894ccc42fb","riderId":"user1","timestamp":"2025-06-07T08:02:22.733Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["e64c80ef-a2a0-4ce0-b11b-614b9429f1b2","1677f0cb-3ddf-4b19-9f48-56894ccc42fb"],"timestamp":"2025-06-07T08:02:23.222Z"}
+{"level":"warn","message":"No drivers available","requestId":"e64c80ef-a2a0-4ce0-b11b-614b9429f1b2","timestamp":"2025-06-07T08:02:23.284Z"}
+{"level":"warn","message":"No drivers available","requestId":"1677f0cb-3ddf-4b19-9f48-56894ccc42fb","timestamp":"2025-06-07T08:02:23.286Z"}
+{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["1677f0cb-3ddf-4b19-9f48-56894ccc42fb"],"timestamp":"2025-06-07T08:03:23.351Z"}
+{"level":"warn","message":"No drivers available","requestId":"1677f0cb-3ddf-4b19-9f48-56894ccc42fb","timestamp":"2025-06-07T08:03:23.394Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:05:18.472Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:05:18.477Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:05:18.479Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:05:18.479Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:05:18.481Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:05:18.482Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:05:18.484Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:18.498Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:18.509Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:05:31.137Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:05:31.142Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:05:31.144Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:05:31.144Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:05:31.147Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:05:31.148Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:05:31.148Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:05:31.149Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:05:31.154Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:31.167Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:31.178Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:05:32.965Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:05:32.970Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:05:32.972Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:05:32.972Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:05:32.973Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:05:32.978Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:32.997Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:33.004Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:05:45.273Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:05:45.278Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:05:45.282Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:05:45.282Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:05:45.283Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:05:45.283Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:05:45.283Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:05:45.283Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:05:45.283Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:05:45.284Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:05:45.284Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:05:45.284Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:05:45.284Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:05:45.287Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:45.303Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:05:45.314Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T08:05:52.465Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:06:02.000Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:06:02.006Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:06:02.009Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:06:02.009Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:06:02.010Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:06:02.010Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:06:02.010Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:06:02.011Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:06:02.014Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:06:02.029Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:06:02.041Z"}
+{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.519Z"}
+{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.522Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:06:03.525Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:06:03.526Z"}
+{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.531Z"}
+{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.532Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:06:03.532Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:06:03.533Z"}
+{"body":{"DRIVER_ID":"DRV3","city":"Chennai","isAvailable":true,"lat":13.045,"long":80.56,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.536Z"}
+{"city":"chennai","lat":13.045,"level":"warn","long":80.56,"message":"Invalid coordinates","timestamp":"2025-06-07T08:06:03.536Z"}
+{"body":{"DRIVER_ID":"DRV4","city":"Chennai","isAvailable":true,"lat":13.058,"long":80.15,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.539Z"}
+{"DRIVER_ID":"DRV4","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.541Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Force Sync","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:06:03.541Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Added to new cell","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:06:03.542Z"}
+{"body":{"DRIVER_ID":"DRV5","city":"Chennai","isAvailable":true,"lat":13.065,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.547Z"}
+{"DRIVER_ID":"DRV5","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.549Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Force Sync","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:06:03.550Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Added to new cell","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:06:03.551Z"}
+{"body":{"DRIVER_ID":"DRV6","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.555Z"}
+{"DRIVER_ID":"DRV6","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.557Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:06:03.557Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:06:03.558Z"}
+{"body":{"DRIVER_ID":"DRV7","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.22,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.562Z"}
+{"DRIVER_ID":"DRV7","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.564Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Force Sync","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:06:03.564Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Added to new cell","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:06:03.565Z"}
+{"body":{"DRIVER_ID":"DRV8","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.23,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:06:03.571Z"}
+{"DRIVER_ID":"DRV8","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:06:03.573Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Force Sync","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:06:03.573Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Added to new cell","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:06:03.575Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:06:12.340Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"riderId":"user4"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:06:12.341Z"}
+{"cityLower":"chennai","lat":13.058,"level":"info","long":80.15,"message":"GEOADD riders","riderId":"user4","timestamp":"2025-06-07T08:06:12.345Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:06:23.261Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:06:23.261Z"}
+{"cityLower":"chennai","lat":13.075,"level":"info","long":80.26,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-07T08:06:23.264Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:06:32.289Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:06:32.289Z"}
+{"cityLower":"chennai","lat":13.05,"level":"info","long":80.25,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:06:32.292Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:06:37.520Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:06:37.520Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"32fb1fcd-bd1e-4112-a23a-58ceb1aa1957","riderId":"user1","timestamp":"2025-06-07T08:06:37.527Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:06:40.271Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:06:40.271Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"5ce72b1f-fd9a-441b-9234-c9d2566c27f4","riderId":"user2","timestamp":"2025-06-07T08:06:40.275Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["32fb1fcd-bd1e-4112-a23a-58ceb1aa1957","5ce72b1f-fd9a-441b-9234-c9d2566c27f4"],"timestamp":"2025-06-07T08:06:40.609Z"}
+{"driverIds":["DRV1","DRV5","DRV2","DRV6","DRV8"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:06:40.678Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:06:40.679Z"}
+{"DRIVER_ID":"DRV1","error":"timeout of 2000ms exceeded","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:42.750Z"}
+{"DRIVER_ID":"DRV1","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:06:42.750Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:06:42.753Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:44.394Z"}
+{"DRIVER_ID":"DRV5","cost":2.01,"eta":2,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:06:44.394Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:06:44.395Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:44.841Z"}
+{"DRIVER_ID":"DRV2","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:06:44.841Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:06:44.842Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:45.289Z"}
+{"DRIVER_ID":"DRV6","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:06:45.290Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:06:45.291Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:45.760Z"}
+{"DRIVER_ID":"DRV8","cost":7.01,"eta":7,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:06:45.761Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:45.763Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:06:46.053Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"rideType":"economy","riderId":"user4"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:06:46.053Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"ed54be6e-8da6-4f8d-a9a0-9d497139f630","riderId":"user4","timestamp":"2025-06-07T08:06:46.056Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:46.247Z"}
+{"DRIVER_ID":"DRV1","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:46.247Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:46.249Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:46.749Z"}
+{"DRIVER_ID":"DRV5","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:46.749Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:46.752Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:47.220Z"}
+{"DRIVER_ID":"DRV2","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:47.220Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:47.223Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:47.712Z"}
+{"DRIVER_ID":"DRV6","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:47.712Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:47.714Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:48.136Z"}
+{"DRIVER_ID":"DRV8","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:48.136Z"}
+{"error":"eta is not defined","level":"error","message":"Batch processing error","stack":"ReferenceError: eta is not defined\n    at processBatch (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:104:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Queue.<anonymous> (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:43:5)","timestamp":"2025-06-07T08:06:48.137Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["5ce72b1f-fd9a-441b-9234-c9d2566c27f4","ed54be6e-8da6-4f8d-a9a0-9d497139f630"],"timestamp":"2025-06-07T08:06:48.144Z"}
+{"driverIds":["DRV2","DRV6","DRV5","DRV8","DRV4"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:06:48.210Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:48.212Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:48.694Z"}
+{"DRIVER_ID":"DRV2","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:48.694Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:48.697Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:49.243Z"}
+{"DRIVER_ID":"DRV6","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:49.243Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:49.245Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:49.787Z"}
+{"DRIVER_ID":"DRV5","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:49.787Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:49.788Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:50.252Z"}
+{"DRIVER_ID":"DRV8","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:06:50.252Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:06:50.255Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:50.815Z"}
+{"DRIVER_ID":"DRV4","eta":17,"level":"info","message":"Invalid ETA","riderId":"user2","timestamp":"2025-06-07T08:06:50.815Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:06:50.818Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:51.418Z"}
+{"DRIVER_ID":"DRV2","eta":17,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:06:51.418Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:06:51.421Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:52.031Z"}
+{"DRIVER_ID":"DRV6","eta":17,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:06:52.031Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:06:52.034Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:52.474Z"}
+{"DRIVER_ID":"DRV5","eta":18,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:06:52.474Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:06:52.477Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:52.958Z"}
+{"DRIVER_ID":"DRV8","cost":13.01,"eta":13,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:06:52.958Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:06:52.960Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:06:53.558Z"}
+{"DRIVER_ID":"DRV4","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:06:53.558Z"}
+{"error":"eta is not defined","level":"error","message":"Batch processing error","stack":"ReferenceError: eta is not defined\n    at processBatch (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:104:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Queue.<anonymous> (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:43:5)","timestamp":"2025-06-07T08:06:53.558Z"}
+{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["ed54be6e-8da6-4f8d-a9a0-9d497139f630"],"timestamp":"2025-06-07T08:07:53.586Z"}
+{"driverIds":["DRV4"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:07:53.620Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:07:53.621Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:07:54.316Z"}
+{"DRIVER_ID":"DRV4","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:07:54.317Z"}
+{"error":"eta is not defined","level":"error","message":"Batch processing error","stack":"ReferenceError: eta is not defined\n    at processBatch (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:104:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Queue.<anonymous> (C:\\Projects\\RideMate\\locationServer\\services\\matching.js:43:5)","timestamp":"2025-06-07T08:07:54.317Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:08:39.101Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:08:39.106Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:08:39.107Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:08:39.108Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:08:39.109Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:08:39.109Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:08:39.109Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:08:39.109Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:08:39.110Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:08:39.110Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:08:39.110Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:08:39.110Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:08:39.110Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:08:39.113Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:08:39.125Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:08:39.137Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T08:08:43.025Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:10:59.457Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:10:59.464Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:10:59.466Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:10:59.466Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:10:59.467Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:10:59.470Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:10:59.484Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:10:59.496Z"}
+{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.627Z"}
+{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.630Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:11:00.632Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:11:00.633Z"}
+{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.638Z"}
+{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.639Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:11:00.639Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:11:00.640Z"}
+{"body":{"DRIVER_ID":"DRV3","city":"Chennai","isAvailable":true,"lat":13.045,"long":80.56,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.643Z"}
+{"city":"chennai","lat":13.045,"level":"warn","long":80.56,"message":"Invalid coordinates","timestamp":"2025-06-07T08:11:00.644Z"}
+{"body":{"DRIVER_ID":"DRV4","city":"Chennai","isAvailable":true,"lat":13.058,"long":80.15,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.648Z"}
+{"DRIVER_ID":"DRV4","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.649Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Force Sync","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:11:00.650Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Added to new cell","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:11:00.651Z"}
+{"body":{"DRIVER_ID":"DRV5","city":"Chennai","isAvailable":true,"lat":13.065,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.655Z"}
+{"DRIVER_ID":"DRV5","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.657Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Force Sync","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:11:00.657Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Added to new cell","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:11:00.658Z"}
+{"body":{"DRIVER_ID":"DRV6","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.662Z"}
+{"DRIVER_ID":"DRV6","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.663Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:11:00.663Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:11:00.664Z"}
+{"body":{"DRIVER_ID":"DRV7","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.22,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.667Z"}
+{"DRIVER_ID":"DRV7","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.668Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Force Sync","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:11:00.669Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Added to new cell","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:11:00.670Z"}
+{"body":{"DRIVER_ID":"DRV8","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.23,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:11:00.674Z"}
+{"DRIVER_ID":"DRV8","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:11:00.676Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Force Sync","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:11:00.677Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Added to new cell","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:11:00.678Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:11:08.365Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:11:08.365Z"}
+{"cityLower":"chennai","lat":13.05,"level":"info","long":80.25,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:11:08.368Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:11:23.473Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:11:23.473Z"}
+{"cityLower":"chennai","lat":13.075,"level":"info","long":80.26,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-07T08:11:23.478Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:11:30.800Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"rideType":"economy","riderId":"user4"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:11:30.800Z"}
+{"cityLower":"chennai","lat":13.058,"level":"info","long":80.15,"message":"GEOADD riders","riderId":"user4","timestamp":"2025-06-07T08:11:30.803Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:11:35.830Z"}
+{"body":{"city":"Chennai","lat":13.058,"long":80.15,"rideType":"economy","riderId":"user4"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:11:35.831Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"2b1e4d3a-0778-40da-ba78-fcef5a5232e4","riderId":"user4","timestamp":"2025-06-07T08:11:35.849Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:11:42.886Z"}
+{"body":{"city":"Chennai","lat":13.05,"long":80.25,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:11:42.886Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"bdc63a22-06f7-4379-b3d6-50e6f9def7a9","riderId":"user2","timestamp":"2025-06-07T08:11:42.892Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["2b1e4d3a-0778-40da-ba78-fcef5a5232e4","bdc63a22-06f7-4379-b3d6-50e6f9def7a9"],"timestamp":"2025-06-07T08:11:43.053Z"}
+{"driverIds":["DRV4","DRV2","DRV6","DRV5","DRV8"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:11:43.146Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:11:43.149Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:44.616Z"}
+{"DRIVER_ID":"DRV4","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:11:44.616Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:11:44.618Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:45.240Z"}
+{"DRIVER_ID":"DRV2","eta":17,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:11:45.240Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:11:45.243Z"}
+{"DRIVER_ID":"DRV6","error":"timeout of 2000ms exceeded","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:47.259Z"}
+{"DRIVER_ID":"DRV6","eta":17,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:11:47.260Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:11:47.277Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:11:47.848Z"}
+{"body":{"city":"Chennai","lat":13.075,"long":80.26,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:11:47.849Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"85b3b865-186a-4a0b-a8bb-56168b75a1b2","riderId":"user1","timestamp":"2025-06-07T08:11:47.854Z"}
+{"DRIVER_ID":"DRV5","error":"timeout of 2000ms exceeded","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:49.293Z"}
+{"DRIVER_ID":"DRV5","eta":18,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:11:49.294Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:11:49.299Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:50.854Z"}
+{"DRIVER_ID":"DRV8","cost":13.01,"eta":13,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:11:50.855Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:11:50.857Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:51.352Z"}
+{"DRIVER_ID":"DRV4","eta":17,"level":"info","message":"Invalid ETA","riderId":"user2","timestamp":"2025-06-07T08:11:51.353Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:11:51.357Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:51.956Z"}
+{"DRIVER_ID":"DRV2","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:11:51.957Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:11:51.959Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:53.101Z"}
+{"DRIVER_ID":"DRV6","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:11:53.101Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:11:53.104Z"}
+{"DRIVER_ID":"DRV5","error":"timeout of 2000ms exceeded","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:55.109Z"}
+{"DRIVER_ID":"DRV5","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:11:55.110Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:11:55.114Z"}
+{"DRIVER_ID":"DRV8","error":"timeout of 2000ms exceeded","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:11:57.129Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:12:54.095Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:12:54.101Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:12:54.103Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:12:54.103Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:12:54.104Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:12:54.105Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:12:54.108Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:12:54.122Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:12:54.135Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["bdc63a22-06f7-4379-b3d6-50e6f9def7a9","85b3b865-186a-4a0b-a8bb-56168b75a1b2"],"timestamp":"2025-06-07T08:12:54.158Z"}
+{"driverIds":["DRV2","DRV6","DRV5","DRV8","DRV1"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:12:54.212Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:12:54.214Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:55.852Z"}
+{"DRIVER_ID":"DRV2","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:12:55.852Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:12:55.855Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:56.376Z"}
+{"DRIVER_ID":"DRV6","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:12:56.376Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:12:56.378Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:56.878Z"}
+{"DRIVER_ID":"DRV5","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:12:56.879Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:12:56.880Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:57.464Z"}
+{"DRIVER_ID":"DRV8","cost":3.01,"eta":3,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:12:57.464Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.05,"riderLong":80.25,"timestamp":"2025-06-07T08:12:57.466Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:58.007Z"}
+{"DRIVER_ID":"DRV1","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:12:58.008Z"}
+{"DRIVER_ID":"DRV2","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:12:58.010Z"}
+{"DRIVER_ID":"DRV2","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:58.529Z"}
+{"DRIVER_ID":"DRV2","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:12:58.529Z"}
+{"DRIVER_ID":"DRV6","driverLat":"13.0500004826113738","driverLong":"80.25000125169754028","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:12:58.531Z"}
+{"DRIVER_ID":"DRV6","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:59.031Z"}
+{"DRIVER_ID":"DRV6","cost":4.01,"eta":4,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:12:59.031Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:12:59.033Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:59.508Z"}
+{"DRIVER_ID":"DRV5","cost":2.01,"eta":2,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:12:59.508Z"}
+{"DRIVER_ID":"DRV8","driverLat":"13.0500004826113738","driverLong":"80.22999733686447144","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:12:59.510Z"}
+{"DRIVER_ID":"DRV8","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:12:59.946Z"}
+{"DRIVER_ID":"DRV8","cost":7.01,"eta":7,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:12:59.947Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:12:59.949Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:00.376Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:13:56.167Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:13:56.172Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:13:56.174Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:13:56.174Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:13:56.175Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:13:56.175Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:13:56.175Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:13:56.176Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:13:56.176Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:13:56.176Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:13:56.176Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:13:56.176Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:13:56.177Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:13:56.182Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:13:56.201Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:13:56.209Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["2b1e4d3a-0778-40da-ba78-fcef5a5232e4","85b3b865-186a-4a0b-a8bb-56168b75a1b2"],"timestamp":"2025-06-07T08:13:56.229Z"}
+{"driverIds":["DRV4","DRV1","DRV5"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:13:56.289Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:13:56.291Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:57.401Z"}
+{"DRIVER_ID":"DRV4","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user4","timestamp":"2025-06-07T08:13:57.402Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:13:57.404Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:57.907Z"}
+{"DRIVER_ID":"DRV1","eta":19,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:13:57.907Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.058,"riderLong":80.15,"timestamp":"2025-06-07T08:13:57.909Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:58.384Z"}
+{"DRIVER_ID":"DRV5","eta":18,"level":"info","message":"Invalid ETA","riderId":"user4","timestamp":"2025-06-07T08:13:58.384Z"}
+{"DRIVER_ID":"DRV4","driverLat":"13.0580000625902457","driverLong":"80.1499977707862854","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:13:58.386Z"}
+{"DRIVER_ID":"DRV4","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:58.773Z"}
+{"DRIVER_ID":"DRV4","eta":19,"level":"info","message":"Invalid ETA","riderId":"user1","timestamp":"2025-06-07T08:13:58.774Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:13:58.776Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:13:59.253Z"}
+{"DRIVER_ID":"DRV1","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:13:59.253Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:13:59.255Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:14:00.194Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:06.507Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:06.515Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:06.517Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:06.517Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:06.519Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:06.519Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:06.519Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:06.519Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:06.520Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:06.520Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:06.520Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:06.520Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:06.520Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:06.524Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:06.540Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:06.555Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:08.234Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:08.246Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:08.249Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:08.249Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:08.251Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:08.252Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:08.253Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:08.253Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:08.254Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:08.254Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:08.254Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:08.255Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:08.255Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:08.260Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:08.276Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:08.295Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:21.056Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:21.061Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:21.063Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:21.063Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:21.064Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:21.065Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:21.065Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:21.065Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:21.068Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:21.081Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:21.093Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:30.499Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:30.504Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:30.506Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:30.506Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:30.507Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:30.507Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:30.507Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:30.507Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:30.507Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:30.508Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:30.508Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:30.508Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:30.508Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:30.511Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:30.522Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:30.534Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:33.390Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:33.394Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:33.396Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:33.396Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:33.397Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:33.398Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:33.401Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:33.419Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:33.426Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:37.670Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:37.675Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:37.677Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:37.677Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:37.677Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:37.678Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:37.681Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:37.699Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:37.705Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:49.024Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:49.031Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:49.033Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:49.033Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:49.034Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:49.037Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:49.052Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:49.071Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:14:51.081Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:14:51.086Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:14:51.088Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:14:51.088Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:14:51.089Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:14:51.089Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:14:51.089Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:14:51.089Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:14:51.089Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:14:51.090Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:14:51.090Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:14:51.090Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:14:51.090Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:14:51.092Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:51.110Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:14:51.117Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T08:14:52.741Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:16:07.509Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:16:07.515Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:16:07.518Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:16:07.519Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:16:07.521Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:16:07.521Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:16:07.522Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:16:07.522Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:16:07.522Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:16:07.523Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:16:07.523Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:16:07.523Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:16:07.523Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:16:07.532Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:16:07.546Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:16:07.561Z"}
+{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.288Z"}
+{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.291Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:16:09.293Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:16:09.294Z"}
+{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.303Z"}
+{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.306Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:16:09.306Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:16:09.307Z"}
+{"body":{"DRIVER_ID":"DRV3","city":"Chennai","isAvailable":true,"lat":13.045,"long":80.56,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.311Z"}
+{"city":"chennai","lat":13.045,"level":"warn","long":80.56,"message":"Invalid coordinates","timestamp":"2025-06-07T08:16:09.311Z"}
+{"body":{"DRIVER_ID":"DRV4","city":"Chennai","isAvailable":true,"lat":13.058,"long":80.15,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.318Z"}
+{"DRIVER_ID":"DRV4","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.321Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Force Sync","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:16:09.321Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Added to new cell","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:16:09.322Z"}
+{"body":{"DRIVER_ID":"DRV5","city":"Chennai","isAvailable":true,"lat":13.065,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.326Z"}
+{"DRIVER_ID":"DRV5","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.328Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Force Sync","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:16:09.328Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Added to new cell","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:16:09.329Z"}
+{"body":{"DRIVER_ID":"DRV6","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.333Z"}
+{"DRIVER_ID":"DRV6","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.335Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:16:09.335Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:16:09.336Z"}
+{"body":{"DRIVER_ID":"DRV7","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.22,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.340Z"}
+{"DRIVER_ID":"DRV7","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.342Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Force Sync","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:16:09.342Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Added to new cell","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:16:09.344Z"}
+{"body":{"DRIVER_ID":"DRV8","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.23,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:16:09.349Z"}
+{"DRIVER_ID":"DRV8","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:16:09.351Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Force Sync","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:16:09.351Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Added to new cell","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:16:09.352Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:16:15.386Z"}
+{"body":{"city":"Chennai","lat":13.0777,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:16:15.386Z"}
+{"cityLower":"chennai","lat":13.0777,"level":"info","long":80.2618,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-07T08:16:15.388Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:16:23.977Z"}
+{"body":{"city":"Chennai","lat":13.0777,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:16:23.977Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"1034817b-dd21-47d7-a958-45eb57824041","riderId":"user1","timestamp":"2025-06-07T08:16:23.983Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["85b3b865-186a-4a0b-a8bb-56168b75a1b2","1034817b-dd21-47d7-a958-45eb57824041"],"timestamp":"2025-06-07T08:16:24.031Z"}
+{"driverIds":["DRV1","DRV5"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:16:24.058Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:16:24.060Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:24.988Z"}
+{"DRIVER_ID":"DRV1","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:16:24.988Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:16:24.992Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:25.294Z"}
+{"DRIVER_ID":"DRV5","cost":2.01,"eta":2,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:16:25.294Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0777,"riderLong":80.2618,"timestamp":"2025-06-07T08:16:25.297Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:25.604Z"}
+{"DRIVER_ID":"DRV1","cost":1.01,"eta":1,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:16:25.604Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0777,"riderLong":80.2618,"timestamp":"2025-06-07T08:16:25.606Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:25.989Z"}
+{"DRIVER_ID":"DRV5","cost":2.01,"eta":2,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:16:25.989Z"}
+{"costMatrix":[[0.01,2.01],[1.01,2.01]],"level":"info","message":"Cost matrix","timestamp":"2025-06-07T08:16:25.989Z"}
+{"assignments":[[0,0],[1,1]],"level":"info","message":"Assignments","timestamp":"2025-06-07T08:16:25.990Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.075,"riderLong":80.26,"timestamp":"2025-06-07T08:16:25.991Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:26.280Z"}
+{"DRIVER_ID":"DRV1","distance":0.00007498399996945602,"eta":0,"level":"info","message":"Best match selected","rating":4,"requestId":"85b3b865-186a-4a0b-a8bb-56168b75a1b2","riderId":"user1","timestamp":"2025-06-07T08:16:26.284Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0777,"riderLong":80.2618,"timestamp":"2025-06-07T08:16:26.285Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:16:26.605Z"}
+{"DRIVER_ID":"DRV5","distance":1.4254566329967986,"eta":2,"level":"info","message":"Best match selected","rating":4,"requestId":"1034817b-dd21-47d7-a958-45eb57824041","riderId":"user1","timestamp":"2025-06-07T08:16:26.607Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:16:42.979Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:16:42.979Z"}
+{"cityLower":"chennai","lat":13.0213,"level":"info","long":80.2418,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:16:42.981Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:16:48.022Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:16:48.022Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"94f7cecb-e347-4f40-8e96-a0f462111ff7","riderId":"user2","timestamp":"2025-06-07T08:16:48.029Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["1034817b-dd21-47d7-a958-45eb57824041","94f7cecb-e347-4f40-8e96-a0f462111ff7"],"timestamp":"2025-06-07T08:16:48.182Z"}
+{"level":"warn","message":"No drivers available","requestId":"1034817b-dd21-47d7-a958-45eb57824041","timestamp":"2025-06-07T08:16:48.227Z"}
+{"level":"warn","message":"No drivers available","requestId":"94f7cecb-e347-4f40-8e96-a0f462111ff7","timestamp":"2025-06-07T08:16:48.227Z"}
+{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["94f7cecb-e347-4f40-8e96-a0f462111ff7"],"timestamp":"2025-06-07T08:17:48.742Z"}
+{"level":"warn","message":"No drivers available","requestId":"94f7cecb-e347-4f40-8e96-a0f462111ff7","timestamp":"2025-06-07T08:17:48.775Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:24.873Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:24.878Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:24.880Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:24.880Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:24.881Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:24.882Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:24.885Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:24.910Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:24.920Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:29.744Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:29.750Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:29.752Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:29.752Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:29.753Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:29.754Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:29.757Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:29.772Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:29.783Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:33.385Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:33.390Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:33.392Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:33.392Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:33.393Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:33.394Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:33.397Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:33.410Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:33.420Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:39.402Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:39.407Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:39.409Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:39.409Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:39.410Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:39.411Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:39.411Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:39.412Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:39.412Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:39.412Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:39.412Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:39.412Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:39.413Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:39.415Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:39.429Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:39.440Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:54.368Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:54.375Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:54.377Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:54.377Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:54.378Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:54.378Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:54.378Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:54.378Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:54.378Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:54.379Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:54.379Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:54.379Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:54.379Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:54.382Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:54.395Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:54.406Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:18:55.996Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:18:56.001Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:18:56.003Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:18:56.003Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:18:56.004Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:18:56.005Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:18:56.005Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:18:56.005Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:18:56.005Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:18:56.005Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:18:56.006Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:18:56.006Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:18:56.006Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:18:56.009Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:56.024Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:18:56.038Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T08:19:00.409Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:19:29.946Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:19:29.952Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:19:29.953Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:19:29.954Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:19:29.954Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:19:29.955Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:19:29.958Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:19:29.972Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:19:29.984Z"}
+{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.766Z"}
+{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.769Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:19:30.772Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:19:30.774Z"}
+{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.779Z"}
+{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.780Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:19:30.780Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:19:30.781Z"}
+{"body":{"DRIVER_ID":"DRV3","city":"Chennai","isAvailable":true,"lat":13.045,"long":80.56,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.784Z"}
+{"city":"chennai","lat":13.045,"level":"warn","long":80.56,"message":"Invalid coordinates","timestamp":"2025-06-07T08:19:30.785Z"}
+{"body":{"DRIVER_ID":"DRV4","city":"Chennai","isAvailable":true,"lat":13.058,"long":80.15,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.793Z"}
+{"DRIVER_ID":"DRV4","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.795Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Force Sync","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:19:30.795Z"}
+{"DRIVER_ID":"DRV4","level":"info","message":"Added to new cell","newCell":"88618c4dddfffff","timestamp":"2025-06-07T08:19:30.796Z"}
+{"body":{"DRIVER_ID":"DRV5","city":"Chennai","isAvailable":true,"lat":13.065,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.802Z"}
+{"DRIVER_ID":"DRV5","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.803Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Force Sync","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:19:30.803Z"}
+{"DRIVER_ID":"DRV5","level":"info","message":"Added to new cell","newCell":"88618c48d7fffff","timestamp":"2025-06-07T08:19:30.804Z"}
+{"body":{"DRIVER_ID":"DRV6","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.807Z"}
+{"DRIVER_ID":"DRV6","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.809Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:19:30.809Z"}
+{"DRIVER_ID":"DRV6","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:19:30.810Z"}
+{"body":{"DRIVER_ID":"DRV7","city":"Chennai","isAvailable":true,"lat":13.075,"long":80.22,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.813Z"}
+{"DRIVER_ID":"DRV7","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.814Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Force Sync","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:19:30.814Z"}
+{"DRIVER_ID":"DRV7","level":"info","message":"Added to new cell","newCell":"88618c4d47fffff","timestamp":"2025-06-07T08:19:30.815Z"}
+{"body":{"DRIVER_ID":"DRV8","city":"Chennai","isAvailable":true,"lat":13.05,"long":80.23,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:19:30.819Z"}
+{"DRIVER_ID":"DRV8","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:19:30.820Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Force Sync","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:19:30.821Z"}
+{"DRIVER_ID":"DRV8","level":"info","message":"Added to new cell","newCell":"88618c4f23fffff","timestamp":"2025-06-07T08:19:30.822Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:19:37.288Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:19:37.289Z"}
+{"cityLower":"chennai","lat":13.0213,"level":"info","long":80.2418,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:19:37.291Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:19:51.936Z"}
+{"body":{"city":"Chennai","lat":13.077,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:19:51.936Z"}
+{"cityLower":"chennai","lat":13.077,"level":"info","long":80.2618,"message":"GEOADD riders","riderId":"user1","timestamp":"2025-06-07T08:19:51.939Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:19:57.641Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:19:57.641Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"25efda9b-2f99-4cbd-8450-d4c1e51d853a","riderId":"user2","timestamp":"2025-06-07T08:19:57.658Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:20:00.284Z"}
+{"body":{"city":"Chennai","lat":13.077,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:20:00.284Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"fe3c9985-7c7d-4654-a453-bb272a1360cc","riderId":"user1","timestamp":"2025-06-07T08:20:00.288Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["25efda9b-2f99-4cbd-8450-d4c1e51d853a","fe3c9985-7c7d-4654-a453-bb272a1360cc"],"timestamp":"2025-06-07T08:20:00.746Z"}
+{"driverIds":["DRV1","DRV5"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:20:00.803Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0213,"riderLong":80.2418,"timestamp":"2025-06-07T08:20:00.806Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:02.572Z"}
+{"DRIVER_ID":"DRV1","cost":9.01,"eta":9,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:20:02.572Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0213,"riderLong":80.2418,"timestamp":"2025-06-07T08:20:02.574Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:03.194Z"}
+{"DRIVER_ID":"DRV5","cost":8.01,"eta":8,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:20:03.195Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.077,"riderLong":80.2618,"timestamp":"2025-06-07T08:20:03.197Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:03.628Z"}
+{"DRIVER_ID":"DRV1","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:20:03.628Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.077,"riderLong":80.2618,"timestamp":"2025-06-07T08:20:03.632Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:04.056Z"}
+{"DRIVER_ID":"DRV5","cost":2.01,"eta":2,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:20:04.056Z"}
+{"costMatrix":[[9.01,8.01],[0.01,2.01]],"level":"info","message":"Cost matrix","timestamp":"2025-06-07T08:20:04.057Z"}
+{"assignments":[[0,1],[1,0]],"level":"info","message":"Assignments","timestamp":"2025-06-07T08:20:04.058Z"}
+{"DRIVER_ID":"DRV5","driverLat":"13.0650009624323431","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0213,"riderLong":80.2418,"timestamp":"2025-06-07T08:20:04.061Z"}
+{"DRIVER_ID":"DRV5","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:04.618Z"}
+{"DRIVER_ID":"DRV5","distance":5.244065262030215,"eta":8,"level":"info","message":"Best match selected","rating":4,"requestId":"25efda9b-2f99-4cbd-8450-d4c1e51d853a","riderId":"user2","timestamp":"2025-06-07T08:20:04.625Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.077,"riderLong":80.2618,"timestamp":"2025-06-07T08:20:04.628Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:20:05.131Z"}
+{"DRIVER_ID":"DRV1","distance":0.2956741535619886,"eta":0,"level":"info","message":"Best match selected","rating":4,"requestId":"fe3c9985-7c7d-4654-a453-bb272a1360cc","riderId":"user1","timestamp":"2025-06-07T08:20:05.139Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T08:20:51.617Z"}
+{"level":"info","message":"Initializing rider routes","timestamp":"2025-06-07T08:20:59.423Z"}
+{"level":"info","message":"Matching service started","timestamp":"2025-06-07T08:20:59.428Z"}
+{"level":"info","message":"Starting server setup","timestamp":"2025-06-07T08:20:59.430Z"}
+{"level":"info","message":"Loading express module","timestamp":"2025-06-07T08:20:59.430Z"}
+{"level":"info","message":"Configuring middleware","timestamp":"2025-06-07T08:20:59.431Z"}
+{"level":"info","message":"Mounting routes","timestamp":"2025-06-07T08:20:59.431Z"}
+{"level":"info","message":"Mounting /location/captain","timestamp":"2025-06-07T08:20:59.431Z"}
+{"level":"info","message":"Mounting /location/rider","timestamp":"2025-06-07T08:20:59.431Z"}
+{"level":"info","message":"Mounting /ride","timestamp":"2025-06-07T08:20:59.432Z"}
+{"level":"info","message":"Mounting /captains","timestamp":"2025-06-07T08:20:59.432Z"}
+{"level":"info","message":"Mounting /","timestamp":"2025-06-07T08:20:59.432Z"}
+{"level":"info","message":"Setting up 404 handler","timestamp":"2025-06-07T08:20:59.432Z"}
+{"level":"info","message":"Starting server","timestamp":"2025-06-07T08:20:59.432Z"}
+{"level":"info","message":"Location Server on :3002","timestamp":"2025-06-07T08:20:59.437Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:20:59.450Z"}
+{"level":"info","message":"Redis Connected","timestamp":"2025-06-07T08:20:59.462Z"}
+{"body":{"DRIVER_ID":"DRV1","city":"Chennai","isAvailable":true,"isPetFriendly":false,"lastUpdated":1749284460678,"lat":13.075,"long":80.26,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:21:00.696Z"}
+{"DRIVER_ID":"DRV1","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:21:00.700Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Force Sync","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:21:00.704Z"}
+{"DRIVER_ID":"DRV1","level":"info","message":"Added to new cell","newCell":"88618c4883fffff","timestamp":"2025-06-07T08:21:00.706Z"}
+{"body":{"DRIVER_ID":"DRV2","city":"Chennai","isAvailable":true,"isPetFriendly":false,"lastUpdated":1749284460678,"lat":13.05,"long":80.25,"rating":4,"rideTypeSupported":["economy"],"status":"active","vehicle":{"capacity":4,"type":"sedan"}},"level":"info","message":"POST Captain","timestamp":"2025-06-07T08:21:00.712Z"}
+{"DRIVER_ID":"DRV2","geoAdd":true,"hSet":true,"level":"info","message":"Redis updated","timestamp":"2025-06-07T08:21:00.714Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Force Sync","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:21:00.714Z"}
+{"DRIVER_ID":"DRV2","level":"info","message":"Added to new cell","newCell":"88618c4f2dfffff","timestamp":"2025-06-07T08:21:00.715Z"}
+{"level":"info","message":"Handling POST /location/rider","timestamp":"2025-06-07T08:21:32.090Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Rider","timestamp":"2025-06-07T08:21:32.090Z"}
+{"cityLower":"chennai","lat":13.0213,"level":"info","long":80.2418,"message":"GEOADD riders","riderId":"user2","timestamp":"2025-06-07T08:21:32.092Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:21:35.335Z"}
+{"body":{"city":"Chennai","lat":13.0213,"long":80.2418,"rideType":"economy","riderId":"user2"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:21:35.335Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"1e253ebc-6c7a-4109-8568-cf87669ffdfd","riderId":"user2","timestamp":"2025-06-07T08:21:35.354Z"}
+{"level":"info","message":"Handling POST /ride/request","timestamp":"2025-06-07T08:21:37.957Z"}
+{"body":{"city":"Chennai","lat":13.077,"long":80.2618,"rideType":"economy","riderId":"user1"},"level":"info","message":"POST Ride Request","timestamp":"2025-06-07T08:21:37.958Z"}
+{"cityLower":"chennai","level":"info","message":"Ride request queued","requestId":"783d3688-7b11-48b5-a8ee-09caa8db64d5","riderId":"user1","timestamp":"2025-06-07T08:21:37.962Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["1e253ebc-6c7a-4109-8568-cf87669ffdfd","783d3688-7b11-48b5-a8ee-09caa8db64d5"],"timestamp":"2025-06-07T08:21:38.462Z"}
+{"driverIds":["DRV1"],"level":"info","message":"Available drivers","timestamp":"2025-06-07T08:21:38.532Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.0213,"riderLong":80.2418,"timestamp":"2025-06-07T08:21:38.534Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:21:40.215Z"}
+{"DRIVER_ID":"DRV1","cost":9.01,"eta":9,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user2","timestamp":"2025-06-07T08:21:40.217Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.077,"riderLong":80.2618,"timestamp":"2025-06-07T08:21:40.222Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:21:40.672Z"}
+{"DRIVER_ID":"DRV1","cost":0.01,"eta":0,"level":"info","message":"Cost calculated for matrix","rating":4,"ratingPenalty":0.01,"riderId":"user1","timestamp":"2025-06-07T08:21:40.673Z"}
+{"costMatrix":[[9.01],[0.01]],"level":"info","message":"Cost matrix","timestamp":"2025-06-07T08:21:40.673Z"}
+{"assignments":[[1,0]],"level":"info","message":"Assignments","timestamp":"2025-06-07T08:21:40.675Z"}
+{"DRIVER_ID":"DRV1","driverLat":"13.07500043740593298","driverLong":"80.26000052690505981","level":"info","message":"GeoApify Request","riderLat":13.077,"riderLong":80.2618,"timestamp":"2025-06-07T08:21:40.678Z"}
+{"DRIVER_ID":"DRV1","error":"Request failed with status code 401","level":"warn","message":"GeoApify fallback","timestamp":"2025-06-07T08:21:41.146Z"}
+{"DRIVER_ID":"DRV1","distance":0.2956741535619886,"eta":0,"level":"info","message":"Best match selected","rating":4,"requestId":"783d3688-7b11-48b5-a8ee-09caa8db64d5","riderId":"user1","timestamp":"2025-06-07T08:21:41.154Z"}
+{"level":"info","message":"Batch processing","requestCount":2,"requestIds":["783d3688-7b11-48b5-a8ee-09caa8db64d5","fe3c9985-7c7d-4654-a453-bb272a1360cc"],"timestamp":"2025-06-07T08:21:59.616Z"}
+{"level":"warn","message":"No drivers available","requestId":"783d3688-7b11-48b5-a8ee-09caa8db64d5","timestamp":"2025-06-07T08:21:59.664Z"}
+{"level":"warn","message":"No drivers available","requestId":"fe3c9985-7c7d-4654-a453-bb272a1360cc","timestamp":"2025-06-07T08:21:59.666Z"}
+{"level":"info","message":"Batch processing","requestCount":1,"requestIds":["fe3c9985-7c7d-4654-a453-bb272a1360cc"],"timestamp":"2025-06-07T08:22:59.722Z"}
+{"level":"warn","message":"No drivers available","requestId":"fe3c9985-7c7d-4654-a453-bb272a1360cc","timestamp":"2025-06-07T08:22:59.751Z"}
+{"level":"info","message":"Shutting down server","timestamp":"2025-06-07T09:46:05.276Z"}

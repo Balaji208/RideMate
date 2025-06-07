@@ -632,3 +632,5 @@ app.get("/clear-redis", async (req, res) => {
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 app.listen(PORT, () => logger.info(`Location Server on :${PORT}`));
+
+

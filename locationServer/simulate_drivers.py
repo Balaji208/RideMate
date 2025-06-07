@@ -1,23 +1,37 @@
 import requests
 import json
+import time
 
-def register_driver(driver_id, lat, long, city, ride_types, rating):
-    url = "http://localhost:3002/location/captain"
-    headers = {"Content-Type": "application/json"}
-    payload = {
-        "DRIVER_ID": driver_id,
-        "lat": lat,
-        "long": long,
-        "city": city,
-        "rideTypeSupported": ride_types,
+drivers = [
+    {
+        "DRIVER_ID": "DRV1",
+        "lat": 13.0750,
+        "long": 80.2600,
+        "rideTypeSupported": ["economy"],
         "isAvailable": True,
         "status": "active",
-        "rating": rating,
-        "vehicle": {"capacity": 4, "type": "sedan"}
+        "rating": 4,
+        "lastUpdated": int(time.time() * 1000),
+        "city": "Chennai",
+        "isPetFriendly": False,
+        "vehicle": {"type": "sedan", "capacity": 4}
+    },
+    {
+        "DRIVER_ID": "DRV2",
+        "lat": 13.0500,
+        "long": 80.2500,
+        "rideTypeSupported": ["economy"],
+        "isAvailable": True,
+        "status": "active",
+        "rating": 4,
+        "lastUpdated": int(time.time() * 1000),
+        "city": "Chennai",
+        "isPetFriendly": False,
+        "vehicle": {"type": "sedan", "capacity": 4}
     }
-    response = requests.post(url, headers=headers, data=json.dumps(payload))
-    print(f"Registered {driver_id}: {response.status_code} {response.text}")
+]
 
-# Register drivers for test case
-register_driver("DRV1", 13.075, 80.26, "Chennai", ["economy"], 4.0)
-register_driver("DRV2", 13.05, 80.25, "Chennai", ["economy"], 4.0)
+url = "http://localhost:3002/location/captain"
+for driver in drivers:
+    response = requests.post(url, json=driver)
+    print(f"Registered {driver['DRIVER_ID']}: {response.status_code}, {response.text}")
