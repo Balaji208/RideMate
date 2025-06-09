@@ -1,0 +1,83 @@
+Unique driver IDs found: DRV1,DRV2
+Driver DRV1 details: [Object: null prototype] {
+  rideTypeSupported: '["economy"]',
+  isAvailable: 'true',
+  status: 'active',
+  rating: '4.5',
+  lastUpdated: '1749450836276'
+}
+Driver DRV1 position: [
+  {
+    longitude: '80.26000052690505981',
+    latitude: '13.07500043740593298'
+  }
+]
+Driver DRV1 within threshold: true
+Driver DRV2 details: [Object: null prototype] {
+  rideTypeSupported: '["economy"]',
+  isAvailable: 'true',
+  status: 'active',
+  rating: '4',
+  lastUpdated: '1749450839307'
+}
+Driver DRV2 position: [
+  {
+    longitude: '80.25000125169754028',
+    latitude: '13.0500004826113738'
+  }
+]
+Driver DRV2 within threshold: true
+Final available drivers: DRV1,DRV2
+All possible driver-rider assignments for batch (requests: 2, drivers: 2):
+Assignment: [
+  {
+    "riderId": "user1",
+    "driverId": "DRV1",
+    "eta": 2,
+    "rating": 4.5
+  },
+  {
+    "riderId": "user2",
+    "driverId": "DRV2",
+    "eta": 9,
+    "rating": 4
+  }
+], Total ETA: 11 minutes
+Assignment: [
+  {
+    "riderId": "user1",
+    "driverId": "DRV2",
+    "eta": 4,
+    "rating": 4
+  },
+  {
+    "riderId": "user2",
+    "driverId": "DRV1",
+    "eta": 4,
+    "rating": 4.5
+  }
+], Total ETA: 8 minutes
+Best Matches for Batch (requestCount: 2):
+[
+  {
+    "requestId": "4b6b2d5a-7c49-4ff5-a7bc-3a2647619e58",
+    "riderId": "user1",
+    "DRIVER_ID": "DRV2",
+    "eta": 4,
+    "driverLat": "13.0500004826113738",
+    "driverLong": "80.25000125169754028",
+    "rating": 4,
+    "distance": 3.3346635409656593
+  },
+  {
+    "requestId": "1e505434-09a8-4138-9fcb-2e3a522ca2ea",
+    "riderId": "user2",
+    "DRIVER_ID": "DRV1",
+    "eta": 4,
+    "driverLat": "13.07500043740593298",
+    "driverLong": "80.26000052690505981",
+    "rating": 4.5,
+    "distance": 6.288278267525485
+  }
+]
+Total ETA for Best Matches: 8 minutes
