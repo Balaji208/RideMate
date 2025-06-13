@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import axios from "axios";
-import io from "socket.io-client";
+
+import React, { useEffect, useRef, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
+import io from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux';
 import { reverseGeocode } from '../../utils/reverseGeocode';
 import {
@@ -17,9 +18,9 @@ import {
   setUserLocation,
 } from '../../redux/rider/slices/mapSlice';
 import { setFromLocation, setToLocation, updateStop } from '../../redux/rider/slices/rideSlice';
-import { MapPin, Navigation, ArrowRight, ArrowLeft, ArrowUp, ArrowDown, CornerUpRight, CornerUpLeft } from 'lucide-react';
+import { MapPin, Navigation } from 'lucide-react';
 
-const socket = io("http://localhost:3001", { reconnection: true });
+const socket = io('http://localhost:3002', { reconnection: true, transports: ['websocket', 'polling'] });
 
 // Custom SVG Icons
 const pickupIcon = L.divIcon({
@@ -61,9 +62,9 @@ const stopIcon = (index) => L.divIcon({
   popupAnchor: [0, -12],
 });
 
-const captainIcon = L.divIcon({
+const captainIcon = (rotation = 0) => L.divIcon({
   html: `
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(${rotation}deg)">
       <path d="M20 8H17V6C17 4.9 16.1 4 15 4H9C7.9 4 7 4.9 7 6V8H4C2.9 8 2 8.9 2 10V16C2 17.1 2.9 18 4 18H7V20H9V18H15V20H17V18H20C21.1 18 22 17.1 22 16V10Z" fill="#1F2937"/>
     </svg>
   `,
@@ -72,15 +73,25 @@ const captainIcon = L.divIcon({
   iconAnchor: [16, 16],
 });
 
-// Error Boundary for Components
+const riderIcon = L.divIcon({
+  html: `
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" fill="#22C55E"/>
+      <circle cx="12" cy="12" r="6" fill="white"/>
+    </svg>
+  `,
+  className: '',
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+});
+
+// Error Boundary
 class ComponentErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
-
   static getDerivedStateFromError(error) {
     console.error('[ComponentErrorBoundary] Caught error:', error);
     return { hasError: true, error };
   }
-
   render() {
     if (this.state.hasError) {
       return (
@@ -95,33 +106,18 @@ class ComponentErrorBoundary extends React.Component {
 
 const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY;
 
-
-const UpdateMapView = ({ positions }) => {
+const UpdateMapView = ({ center }) => {
   const map = useMap();
-
   useEffect(() => {
     try {
-      const validPositions = positions.filter(
-        pos => Array.isArray(pos) && pos.length === 2 && typeof pos[0] === 'number' && typeof pos[1] === 'number' && !isNaN(pos[0]) && !isNaN(pos[1])
-      );
-      console.log('[UpdateMapView] Valid positions:', validPositions);
-
-      if (validPositions.length > 0) {
-        const bounds = L.latLngBounds(validPositions);
-        if (bounds.isValid()) {
-          console.log('[UpdateMapView] Fitting bounds:', bounds.toBBoxString());
-          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
-        } else {
-          console.warn('[UpdateMapView] Invalid bounds:', bounds);
-        }
-      } else {
-        console.warn('[UpdateMapView] No valid positions to fit bounds');
+      if (center && Array.isArray(center) && center.length === 2 && !isNaN(center[0]) && !isNaN(center[1])) {
+        console.log('[UpdateMapView] Centering on:', center);
+        map.setView(center, 15, { animate: true });
       }
     } catch (error) {
-      console.error('[UpdateMapView] Error adjusting map view:', error);
+      console.error('[UpdateMapView] Error updating map view:', error);
     }
-  }, [positions, map]);
-
+  }, [center, map]);
   return null;
 };
 
@@ -132,13 +128,12 @@ const DraggableMarker = ({ position, setPositionAction, label, icon, stopId }) =
 
   useEffect(() => {
     if (markerRef.current) {
-      markerRef.current.on("dragend", async () => {
+      markerRef.current.on('dragend', async () => {
         try {
           const newPos = markerRef.current.getLatLng();
           console.log(`[DraggableMarker] ${label} dragged to:`, [newPos.lat, newPos.lng]);
           dispatch(setPositionAction([newPos.lat, newPos.lng]));
           const address = await reverseGeocode(newPos.lat, newPos.lng);
-          console.log(`[DraggableMarker] ${label} address:`, address);
           if (label === 'Pickup') {
             dispatch(setFromLocation(address));
           } else if (label === 'Dropoff') {
@@ -153,7 +148,7 @@ const DraggableMarker = ({ position, setPositionAction, label, icon, stopId }) =
     }
   }, [dispatch, setPositionAction, label, stopId]);
 
-  if (!position || !Array.isArray(position) || position.length !== 2 || typeof position[0] !== 'number' || typeof position[1] !== 'number' || isNaN(position[0]) || isNaN(position[1])) {
+  if (!position || !Array.isArray(position) || position.length !== 2 || isNaN(position[0]) || isNaN(position[1])) {
     console.warn(`[DraggableMarker] Invalid position for ${label}:`, position);
     return null;
   }
@@ -162,16 +157,11 @@ const DraggableMarker = ({ position, setPositionAction, label, icon, stopId }) =
 
   return (
     <ComponentErrorBoundary componentName="DraggableMarker">
-      <Marker
-        ref={markerRef}
-        position={position}
-        draggable={true}
-        icon={icon}
-      >
+      <Marker position={position} draggable={true} icon={icon} ref={markerRef}>
         <Popup className="rounded-lg shadow-lg p-2">
           <div className="font-medium text-gray-800">{label}</div>
           {label === 'Stop' && stopIndex >= 0 && (
-            <div className="text-sm text-gray-500">Stop {stopIndex + 1}</div>
+            <div className="text-sm text-gray-500">Stop ${stopIndex + 1}</div>
           )}
         </Popup>
       </Marker>
@@ -183,159 +173,157 @@ const RiderMapContainer = ({ children }) => {
   const dispatch = useDispatch();
   const { pickupPos, dropoffPos, routeCoords, captains, isLoading, userLocation } = useSelector(state => state.map);
   const { fromLocation, toLocation, stops } = useSelector(state => state.ride);
-  const [routeInfo, setRouteInfo] = React.useState({ distance: null, duration: null });
-  const [routeDirections, setRouteDirections] = React.useState([]);
+  const [driverPaths, setDriverPaths] = useState({});
+  const [riderPath, setRiderPath] = useState([]);
+  const [driverPosition, setDriverPosition] = useState(null);
+  const [riderPosition, setRiderPosition] = useState(null);
+  const [driverRotation, setDriverRotation] = useState(0);
+  const animationRef = useRef(null);
 
-  const handleRecenter = () => {
-    if (userLocation) {
-      console.log('[RiderMapContainer] Recentering to userLocation:', userLocation);
-      dispatch(setCenter([userLocation.lat, userLocation.lng]));
-    }
-  };
-
+  // Initialize simulation
   useEffect(() => {
-    let mounted = true;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          if (mounted) {
-            const { latitude, longitude } = position.coords;
-            const currentPos = [latitude, longitude];
-            console.log('[RiderMapContainer] Geolocation success:', currentPos);
-            dispatch(setCenter(currentPos));
-            if (!pickupPos[0] || pickupPos[0] === 0) {
-              dispatch(setPickupPos(currentPos));
-              if (!fromLocation) {
-                reverseGeocode(latitude, longitude).then((address) => {
-                  if (mounted && !fromLocation) {
-                    console.log('[RiderMapContainer] Setting fromLocation:', address);
-                    dispatch(setFromLocation(address));
-                  }
-                }).catch((error) => {
-                  console.error('[RiderMapContainer] Reverse geocode error:', error);
-                });
-              }
-            }
-            dispatch(setUserLocation({ lat: latitude, lng: longitude }));
-            socket?.emit('userLocation', { lat: latitude, lng: longitude });
-            dispatch(setIsLoading(false));
-          }
-        },
-        (err) => {
-          console.error('[RiderMapContainer] Geolocation error:', err);
-          if (mounted) {
-            dispatch(setIsLoading(false));
-          }
-        }
-      );
-    } else {
-      console.warn('[RiderMapContainer] Geolocation not supported');
-      if (mounted) {
-        dispatch(setIsLoading(false));
+    dispatch(setPickupPos([13.0213, 80.6717]));
+    dispatch(setDropoffPos([13.0778, 80.2619]));
+    dispatch(setCenter([13.0213, 80.6717]));
+    console.log('[RiderMapContainer] Initialized pickup:', [13.0213, 80.6717], 'dropoff:', [13.0778, 80.2619]);
+  }, [dispatch]);
+
+  // WebSocket updates
+  useEffect(() => {
+    socket.on('connect', () => console.log('[RiderMapContainer] WebSocket connected to 3002'));
+    socket.on('connect_error', (err) => console.error('[RiderMapContainer] WebSocket error:', err.message));
+
+    socket.on('locationUpdate', (data) => {
+      console.log('[RiderMapContainer] Location update:', data);
+      if (!data.driverId || !data.currentLocation?.coordinates) {
+        console.warn('[RiderMapContainer] Invalid locationUpdate data:', data);
+        return;
       }
-    }
-    return () => {
-      mounted = false;
-    };
-  }, [dispatch, pickupPos, fromLocation]);
+      const [lng, lat] = data.currentLocation.coordinates;
+      dispatch(updateCaptainLocation({
+        driverId: data.driverId,
+        currentLocation: { coordinates: [lng, lat] },
+      }));
+      setDriverPosition([lat, lng]);
+      setDriverPaths(prev => {
+        const newPath = [...(prev[data.driverId] || []), [lat, lng]].slice(-100);
+        console.log(`[RiderMapContainer] Updated driver path for ${data.driverId}:`, newPath);
+        return { ...prev, [data.driverId]: newPath };
+      });
 
+      // Calculate rotation based on previous position
+      const prevPath = driverPaths[data.driverId] || [];
+      if (prevPath.length > 0) {
+        const prevPos = prevPath[prevPath.length - 1];
+        const angle = Math.atan2(lng - prevPos[1], lat - prevPos[0]) * (180 / Math.PI);
+        setDriverRotation(angle);
+      }
+    });
+
+    socket.on('userLocation', (data) => {
+      console.log('[RiderMapContainer] User location:', data);
+      if (!data.riderId || !data.lat || !data.long) {
+        console.warn('[RiderMapContainer] Invalid userLocation data:', data);
+        return;
+      }
+      dispatch(setUserLocation({ lat: data.lat, lng: data.long }));
+      setRiderPosition([data.lat, data.long]);
+      setRiderPath(prev => {
+        const newPath = [...prev, [data.lat, data.long]].slice(-100);
+        console.log(`[RiderMapContainer] Updated rider path for ${data.riderId}:`, newPath);
+        return newPath;
+      });
+    });
+
+    socket.on('rideRequest', (data) => {
+      console.log('[RiderMapContainer] Ride request received:', data);
+      // Update UI or state as needed
+    });
+
+    return () => {
+      socket.off('locationUpdate');
+      socket.off('userLocation');
+      socket.off('rideRequest');
+      socket.off('connect');
+      socket.off('connect_error');
+    };
+  }, [dispatch, driverPaths]);
+
+  // Fetch nearby captains
   useEffect(() => {
     if (userLocation) {
-      console.log('[RiderMapContainer] Fetching captains for userLocation:', userLocation);
-      axios.get(`http://localhost:3001/captains/available?lat=${userLocation.lat}&lng=${userLocation.lng}`)
-        .then((response) => {
+      axios.get(`http://localhost:3002/captains/nearby?lat=${userLocation.lat}&lng=${userLocation.lng}`)
+        .then(response => {
           dispatch(setCaptains(response.data));
+          console.log('[RiderMapContainer] Fetched captains:', response.data);
         })
-        .catch((err) => console.error('[RiderMapContainer] Error fetching captains:', err));
+        .catch(err => console.error('[RiderMapContainer] Error fetching captains:', err));
     }
   }, [userLocation, dispatch]);
 
+  // Geolocation
   useEffect(() => {
-    socket.on("locationUpdate", (data) => {
-      console.log('[RiderMapContainer] Captain location update:', data);
-      dispatch(updateCaptainLocation(data));
-    });
-    return () => socket.off("locationUpdate");
-  }, [dispatch]);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          dispatch(setUserLocation({ lat: latitude, lng: longitude }));
+          if (!fromLocation) {
+            reverseGeocode(latitude, longitude).then(address => {
+              dispatch(setFromLocation(address));
+            });
+          }
+          socket.emit('userLocation', { lat: latitude, lng: longitude, riderId: 'user1', city: 'Chennai' });
+          dispatch(setIsLoading(false));
+        },
+        err => {
+          console.error('[RiderMapContainer] Geolocation error:', err);
+          dispatch(setIsLoading(false));
+        }
+      );
+    } else {
+      dispatch(setIsLoading(false));
+    }
+  }, [dispatch, fromLocation]);
 
+  // Routing
   const fetchRoute = async () => {
-    const validStops = stops.filter(s => s.lat && s.lng && !isNaN(s.lat) && !isNaN(s.lng));
-    const waypoints = [
-      pickupPos,
-      ...validStops.map(s => [s.lat, s.lng]),
-      dropoffPos,
-    ].filter(pos => pos && Array.isArray(pos) && pos.length === 2 && typeof pos[0] === 'number' && typeof pos[1] === 'number' && !isNaN(pos[0]) && !isNaN(pos[1]));
-
+    const validStops = stops.filter(s => s.lat && s.lng);
+    const waypoints = [pickupPos, ...validStops.map(s => [s.lat, s.lng]), dropoffPos].filter(
+      pos => pos && Array.isArray(pos) && pos.length === 2 && !isNaN(pos[0]) && !isNaN(pos[1])
+    );
     if (waypoints.length < 2) {
-      console.warn('[RiderMapContainer] Insufficient waypoints for routing:', waypoints);
       dispatch(setRouteCoords([]));
-      setRouteInfo({ distance: null, duration: null });
-      setRouteDirections([]);
       return;
     }
-
     try {
       const waypointStr = waypoints.map(pos => `${pos[0]},${pos[1]}`).join('|');
-      console.log('[RiderMapContainer] Fetching route with waypoints:', waypointStr);
       const response = await axios.get(
         `https://api.geoapify.com/v1/routing?waypoints=${waypointStr}&mode=drive&details=instruction_details&apiKey=${apiKey}`
       );
       const coords = response.data.features[0].geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
-      const distance = (response.data.features[0].properties.distance / 1000).toFixed(1); // km
-      const duration = (response.data.features[0].properties.time / 60).toFixed(0); // minutes
-
-      // Extract directions from legs
-      const legs = response.data.features[0].properties.legs || [];
-      const directions = [];
-      let stepIndex = 1;
-
-      legs.forEach((leg, legIndex) => {
-        const legSteps = leg.steps || [];
-        legSteps.forEach((step, stepIdx) => {
-          const instruction = step.instruction?.text || `Step ${stepIndex}`;
-          const stepDistance = (step.distance / 1000).toFixed(1); // km
-          directions.push({
-            id: `${legIndex}-${stepIdx}`,
-            instruction,
-            distance: stepDistance,
-          });
-          stepIndex++;
-        });
-
-        // Add waypoint marker (stop or dropoff)
-        if (legIndex < waypoints.length - 1) {
-          const waypointLabel = legIndex === waypoints.length - 2 ? 'Dropoff' : `Stop ${legIndex + 1}`;
-          directions.push({
-            id: `waypoint-${legIndex}`,
-            instruction: `Arrive at ${waypointLabel}`,
-            distance: 0,
-            isWaypoint: true,
-          });
-        }
-      });
-
-      console.log('[RiderMapContainer] Route fetched:', { distance, duration, directions });
       dispatch(setRouteCoords(coords));
-      setRouteInfo({ distance, duration });
-      setRouteDirections(directions);
+      console.log('[RiderMapContainer] Fetched route:', coords);
     } catch (error) {
       console.error('[RiderMapContainer] Routing error:', error);
       dispatch(setRouteCoords([]));
-      setRouteInfo({ distance: null, duration: null });
-      setRouteDirections([]);
     }
   };
 
   useEffect(() => {
-    console.log('[RiderMapContainer] Triggering fetchRoute with:', { pickupPos, dropoffPos, stops });
     fetchRoute();
-  }, [pickupPos, dropoffPos, stops, dispatch]);
+  }, [pickupPos, dropoffPos, stops]);
 
   const positions = [
     pickupPos,
     dropoffPos,
     ...stops.map(s => [s.lat, s.lng]),
-  ].filter(pos => pos && Array.isArray(pos) && pos.length === 2 && typeof pos[0] === 'number' && typeof pos[1] === 'number' && !isNaN(pos[0]) && !isNaN(pos[1]));
+    ...captains.map(c => c.currentLocation?.coordinates ? [c.currentLocation.coordinates[1], c.currentLocation.coordinates[0]] : null),
+    driverPosition,
+    riderPosition,
+    ...Object.values(driverPaths).flat(),
+    ...riderPath,
+  ].filter(pos => pos && Array.isArray(pos) && pos.length === 2 && !isNaN(pos[0]) && !isNaN(pos[1]));
 
   if (isLoading) {
     return (
@@ -345,40 +333,28 @@ const RiderMapContainer = ({ children }) => {
     );
   }
 
-  return (
-    <div className="flex-1 min-h-[400px] md:min-h-0 relative mx-4 my-2 rounded-xl shadow-lg overflow-hidden">
-     
+  console.log('[RiderMapContainer] Rendering - captains:', captains, 'driverPaths:', driverPaths, 'riderPath:', riderPath, 'positions:', positions);
 
+  return (
+    <div className="flex-1 min-h-[400px] relative mx-4 my-2 rounded-xl shadow-lg overflow-hidden">
       <MapContainer
-        center={[0, 0]}
+        center={[13.0213, 80.6717]}
         zoom={13}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: '100%', width: '100%' }}
         className="z-0"
       >
         <TileLayer
           url={`https://maps.geoapify.com/v1/tile/klokantech-basic/{z}/{x}/{y}.png?apiKey=${apiKey}`}
           attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | Powered by <a href="https://www.geoapify.com/">Geoapify</a>'
         />
-        <ComponentErrorBoundary componentName="UpdateMapView">
-          <UpdateMapView positions={positions} />
-        </ComponentErrorBoundary>
-        {pickupPos && Array.isArray(pickupPos) && pickupPos.length === 2 && typeof pickupPos[0] === 'number' && typeof pickupPos[1] === 'number' && !isNaN(pickupPos[0]) && !isNaN(pickupPos[1]) && (
-          <DraggableMarker
-            position={pickupPos}
-            setPositionAction={setPickupPos}
-            label="Pickup"
-            icon={pickupIcon}
-          />
+        <UpdateMapView center={driverPosition || riderPosition || pickupPos} />
+        {pickupPos[0] && pickupPos[1] && (
+          <DraggableMarker position={pickupPos} setPositionAction={setPickupPos} label="Pickup" icon={pickupIcon} />
         )}
-        {dropoffPos && Array.isArray(dropoffPos) && dropoffPos.length === 2 && typeof dropoffPos[0] === 'number' && typeof dropoffPos[1] === 'number' && !isNaN(dropoffPos[0]) && !isNaN(dropoffPos[1]) && (
-          <DraggableMarker
-            position={dropoffPos}
-            setPositionAction={setDropoffPos}
-            label="Dropoff"
-            icon={dropoffIcon}
-          />
+        {dropoffPos[0] && dropoffPos[1] && (
+          <DraggableMarker position={dropoffPos} setPositionAction={setDropoffPos} label="Dropoff" icon={dropoffIcon} />
         )}
-        {stops.map((stop, index) => stop && stop.lat && stop.lng && typeof stop.lat === 'number' && typeof stop.lng === 'number' && !isNaN(stop.lat) && !isNaN(stop.lng) && (
+        {stops.map((stop, index) => stop.lat && stop.lng && (
           <DraggableMarker
             key={stop.id}
             position={[stop.lat, stop.lng]}
@@ -391,25 +367,30 @@ const RiderMapContainer = ({ children }) => {
         {routeCoords.length > 0 && (
           <Polyline positions={routeCoords} color="#3B82F6" weight={5} opacity={0.7} />
         )}
-        {captains.map((captain) =>
-          captain.currentLocation && captain.currentLocation.coordinates && Array.isArray(captain.currentLocation.coordinates) && captain.currentLocation.coordinates.length === 2 ? (
-            <Marker
-              key={captain.driverId}
-              position={[captain.currentLocation.coordinates[1], captain.currentLocation.coordinates[0]]}
-              icon={captainIcon}
-            >
-              <Popup className="rounded-lg shadow-lg p-2">
-                <div className="font-medium text-gray-800">Driver: {captain.driverId}</div>
-              </Popup>
-            </Marker>
-          ) : null
+        {driverPosition && (
+          <Marker position={driverPosition} icon={captainIcon(driverRotation)}>
+            <Popup className="rounded-lg shadow-lg p-2">
+              <div className="font-medium text-gray-800">Driver: DRV001</div>
+            </Popup>
+          </Marker>
+        )}
+        {riderPosition && (
+          <Marker position={riderPosition} icon={riderIcon}>
+            <Popup className="rounded-lg shadow-lg p-2">
+              <div className="font-medium text-gray-800">Rider: user1</div>
+            </Popup>
+          </Marker>
+        )}
+        {Object.entries(driverPaths).map(([driverId, path]) => path.length > 1 && (
+          <Polyline key={driverId} positions={path} color="#FF0000" weight={3} opacity={0.6} />
+        ))}
+        {riderPath.length > 1 && (
+          <Polyline positions={riderPath} color="#22C55E" weight={3} opacity={0.6} />
         )}
         {children}
       </MapContainer>
-
-      
       <button
-        onClick={handleRecenter}
+        onClick={() => dispatch(setCenter(driverPosition || riderPosition || pickupPos))}
         className="absolute bottom-4 right-4 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-colors z-[1000]"
         aria-label="Recenter map"
       >
