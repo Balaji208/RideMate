@@ -5,68 +5,53 @@ const Redis = require("ioredis");
 const pubClient = new Redis({ host: "localhost", port: 6379 });
 const subClient = new Redis({ host: "localhost", port: 6379 });
 
-async function sendNotification(driverId, requestId, riderId, distance,eta,message) {
-  try {
+  async function sendNotification({ driverId, requestId, riderId, distance, eta, message }) {
+    try {
+      console.log('Received driver id : ',driverId);
     const channel = `notifications:${driverId}`;
-    const payload = JSON.stringify({ requestId, riderId,distance,eta, message });
-   // console.log("Payload ",payload);
+    const payload = JSON.stringify({ requestId, riderId, distance, eta, message });
+    console.log(`Publishing notification to ${channel}: ${payload}`);
     await pubClient.publish(channel, payload);
-    logger.info("Notification published", { driverId, requestId,distance,eta, message });
+    logger.info(`Notification published ${message}`, { driverId, requestId, distance, eta });
     // Store notification state
     await redisClient.setEx(`notification:${requestId}:${driverId}`, 10, JSON.stringify({ status: "pending" }));
+    // Simulate driver response after a short delay
+    setTimeout(() => {
+      simulateDriverResponse(driverId, requestId, true);
+    }, 100);
   } catch (err) {
+    console.log(`Notification send error: ${err.message}`);
     logger.error("Notification send error", { driverId, requestId, error: err.message });
     throw err;
   }
 }
-
-async function awaitDriverResponse(driverId, requestId) {
-  return new Promise((resolve) => {
-    const channel = `responses:${driverId}`;
-    const timeout = setTimeout(() => {
-      subClient.unsubscribe(channel);
-      logger.info("Driver response timeout", { driverId, requestId });
-      resolve(false); // Timeout = rejection
-    }, 5000);
-
-    subClient.subscribe(channel, (err) => {
-      if (err) {
-        logger.error("Subscription error", { driverId, requestId, error: err.message });
-        clearTimeout(timeout);
-        resolve(false);
-      }
-    });
-
-    subClient.on("message", async (ch, message) => {
-      if (ch === channel) {
-        try {
-          const response = JSON.parse(message);
-          if (response.requestId === requestId) {
-            clearTimeout(timeout);
-            subClient.unsubscribe(channel);
-            await redisClient.setEx(
-              `notification:${requestId}:${driverId}`,
-              10,
-              JSON.stringify({ status: response.accepted ? "accepted" : "rejected" })
-            );
-            logger.info("Driver response received", { driverId, requestId, accepted: response.accepted });
-            resolve(response.accepted);
-          }
-        } catch (err) {
-          logger.error("Response parse error", { driverId, requestId, error: err.message });
-          resolve(false);
-        }
-      }
-    });
-  });
+async function sendPooledRideNotification({ driverId, sharedRequestId, riderInfo, message }) {
+  try {
+    const channel = `notifications:${driverId}`;
+    const payload = JSON.stringify({ driverId, sharedRequestId, riderInfo, message });
+    console.log(`Publishing notification to ${channel}: ${payload}`);
+    await redisClient.publish(channel, payload);
+    logger.info(`Notification published ${message}`, { driverId, sharedRequestId, riderInfo, message });
+    await redisClient.setEx(`notification:${sharedRequestId}:${driverId}`, 10, JSON.stringify({ status: "pending" }));
+    setTimeout(() => {
+      simulateDriverResponse(driverId, sharedRequestId, true);
+    }, 100);
+  } catch (err) {
+    console.log(`Notification send error: ${err.message}`);
+    logger.error("Notification send error", { driverId, sharedRequestId, error: err.message });
+    throw err;
+  }
 }
 
-// Mock driver response simulator for testing
+
+
 async function simulateDriverResponse(driverId, requestId, accepted = true) {
   const channel = `responses:${driverId}`;
+  console.log("Channel : ",channel);
   const payload = JSON.stringify({ requestId, accepted });
+  console.log(`Simulating driver response on ${channel}: ${payload}`);
   await pubClient.publish(channel, payload);
   logger.info("Simulated driver response", { driverId, requestId, accepted });
 }
 
-module.exports = { sendNotification, awaitDriverResponse, simulateDriverResponse };
+module.exports = { sendNotification, simulateDriverResponse ,sendPooledRideNotification};

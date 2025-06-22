@@ -11,7 +11,7 @@ const { Server } = require('socket.io');
 const axios = require('axios');
 
 logger.info('Starting server setup');
-
+require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: 'http://localhost:5173' } });

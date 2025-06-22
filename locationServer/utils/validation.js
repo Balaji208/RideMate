@@ -1,11 +1,14 @@
-const { VALID_CITIES, VALID_RIDE_TYPES, CHENNAI_BOUNDS } = require("./constants");
+
+const { VALID_CITIES, VALID_RIDE_TYPES, VALID_MODES, VALID_GENDERS, CHENNAI_BOUNDS } = require("./constants");
 
 function validateCaptain(body) {
+  
   const {
     DRIVER_ID,
     long,
     lat,
     rideTypeSupported,
+    mode,
     isAvailable,
     status,
     rating,
@@ -16,7 +19,8 @@ function validateCaptain(body) {
     !DRIVER_ID ||
     typeof lat !== "number" ||
     typeof long !== "number" ||
-    !city
+    !city ||
+    !mode
   ) {
     return { valid: false, error: "Missing required fields" };
   }
@@ -29,14 +33,13 @@ function validateCaptain(body) {
     !Array.isArray(rideTypeSupported) ||
     rideTypeSupported.length === 0 ||
     !rideTypeSupported.every((type) => VALID_RIDE_TYPES.includes(type)) ||
+    !VALID_MODES.includes(mode) ||
     typeof isAvailable !== "boolean" ||
     status !== "active" ||
     typeof rating !== "number" ||
     rating < 1 ||
     rating > 5
   ) {
-  //console.log(!Array.isArray(rideTypeSupported),rideTypeSupported.length==0,!rideTypeSupported.every((type) => VALID_RIDE_TYPES.includes(type)) ,typeof isAvailable,
-  // typeof rating,rating)
     return { valid: false, error: "Invalid captain details" };
   }
 
@@ -63,13 +66,18 @@ function validateRider(body) {
 }
 
 function validateRideRequest(body) {
-  const { riderId, lat, long, rideType, city } = body;
+  const { riderId, lat, long, dropoffLat, dropoffLong, rideType, mode, ridePooling, gender, city } = body;
 
   if (
     !riderId ||
     typeof lat !== "number" ||
     typeof long !== "number" ||
+    typeof dropoffLat !== "number" ||
+    typeof dropoffLong !== "number" ||
     !rideType ||
+    !mode ||
+    typeof ridePooling !== "boolean" ||
+    !gender ||
     !city
   ) {
     return { valid: false, error: "Missing required fields" };
@@ -81,6 +89,14 @@ function validateRideRequest(body) {
 
   if (!VALID_RIDE_TYPES.includes(rideType)) {
     return { valid: false, error: "Invalid ride type" };
+  }
+
+  if (!VALID_MODES.includes(mode)) {
+    return { valid: false, error: "Invalid mode" };
+  }
+
+  if (!VALID_GENDERS.includes(gender)) {
+    return { valid: false, error: "Invalid gender" };
   }
 
   return { valid: true };
@@ -119,7 +135,7 @@ function validateCoordinates(cityLower, lat, long) {
       long <= CHENNAI_BOUNDS.longMax
     );
   }
-  return true; // Add bounds for other cities as needed
+  return true;
 }
 
 module.exports = {

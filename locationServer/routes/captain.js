@@ -47,11 +47,12 @@ router.post("/", async (req, res) => {
       lat,
       rideTypeSupported,
       isAvailable,
+      mode,
       status,
       rating,
       city,
     } = req.body;
-    logger.info("POST Captain", { DRIVER_ID, lat, long, rideTypeSupported, isAvailable, rating, city });
+    logger.info("POST Captain", { DRIVER_ID, lat, long, rideTypeSupported,isAvailable, rating, city });
 
     const validation = validateCaptain(req.body);
     if (!validation.valid) {
@@ -75,6 +76,7 @@ router.post("/", async (req, res) => {
       rideTypeSupported: JSON.stringify(rideTypeSupported),
       isAvailable: isAvailable ? "true" : "false",
       status,
+      mode ,
       rating: rating.toString(),
       lastUpdated: Date.now().toString(),
     });
