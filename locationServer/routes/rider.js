@@ -95,7 +95,7 @@ router.post("/request", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
+// Below is need to be deleted
 router.get("/match/:requestId", async (req, res) => {
   try {
     logger.info("Handling GET /ride/match/:requestId");

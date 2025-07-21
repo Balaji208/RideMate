@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 
 async function notifyDriverForGroup(DRIVER_ID, group) {
   const sharedRideId = uuidv4();
-  console.log(
+  console.log( 
     `Notifying driver ${DRIVER_ID} for group: ${group.map(r => r.requestId).join(', ')}, Shared Ride ID: ${sharedRideId}`
   );
   try {

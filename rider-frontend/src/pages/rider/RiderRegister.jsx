@@ -73,7 +73,8 @@ const RiderRegister = () => {
     const oAuthId = Math.random().toString(36).substring(2, 15); // Placeholder OTP token
 
     try {
-      const response = await axios.post("http://localhost:3000/api/rider/register", {
+      // console.log('Data : ',riderData);
+      const riderDetails =  {
         fullName: {
           firstName: riderData.fullName.firstName,
           lastName: riderData.fullName.lastName,
@@ -83,7 +84,9 @@ const RiderRegister = () => {
         oAuthId,
         oAuthProvider: provider,
         password: riderData.password || null,
-      });
+      }
+      console.log(riderDetails);
+      const response = await axios.post("http://localhost:3001/riders/register",riderDetails);
 
       toast.success("OTP sent successfully! Please verify.");
       if (provider === "phone") {

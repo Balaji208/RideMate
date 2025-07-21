@@ -2,9 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon servers/mainServer.js",
-    "start:main": "nodemon servers/mainServer.js",
-    "start:location": "nodemon servers/locationServer.js"
+    "start": "nodemon servers/mainServer.js"
   },
   "keywords": [],
   "author": "",

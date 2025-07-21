@@ -7,7 +7,7 @@ const h3 = require("h3-js");
 
 const router = express.Router();
 
-const h3Queue = [];
+const h3Queue = []; // Used to keep track of captain's old h3Cell
 
 async function forceH3Sync(queue, redisClient, logger) {
   try {
@@ -101,6 +101,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Need to be deleted
 router.get("/nearby", async (req, res) => {
   try {
     const { lat, long, type, city, riderId } = req.query;

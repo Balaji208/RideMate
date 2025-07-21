@@ -22,7 +22,7 @@ const registerValidation = [
           }
         }
         return true;
-      }),
+      }), 
       
     // Phone number validation (required for phone OTP)
     body("phone")

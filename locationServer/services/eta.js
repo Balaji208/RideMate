@@ -24,7 +24,7 @@ async function calculateETA(redisClient, cityLower, riderId, clientId, waypoints
   }
 
   try {
-const key = process.env.GEOAPIFY_API_KEY || '35c449a868924a36a9a95c7f7a7af69b';
+const key = '35c449a868924a36a9a95c7f7a7af69b';
     if (!key) {
       console.log(process.env.GEOAPIFY_API_KEY)
       throw new Error('GEOAPIFY_API_KEY is not defined');
@@ -34,7 +34,7 @@ const key = process.env.GEOAPIFY_API_KEY || '35c449a868924a36a9a95c7f7a7af69b';
     }
 
     const waypointStr = waypoints.map(p => `${p.lat},${p.long}`).join('|');
-    const url = `https://api.geoapify.com/v1/routing?waypoints=${encodeURIComponent(waypointStr)}&mode=drive&traffic=approximated&type=short&apiKey=${process.env.GEOAPIFY_API_KEY}`;
+    const url = `https://api.geoapify.com/v1/routing?waypoints=${encodeURIComponent(waypointStr)}&mode=drive&traffic=approximated&type=short&apiKey=${key}`;
     console.log(`Fetching ETA from GeoApify: ${url}`);
     logger.info('GeoApify Request', { clientId, waypoints: waypointStr });
 

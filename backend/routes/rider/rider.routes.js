@@ -5,7 +5,7 @@ const { body } = require("express-validator");
 const {authRider} = require("../../middlewares/rider/auth.middleware");
 const { registerValidation } = require("../../middlewares/rider/validations/validations.registerValidation");
 const { loginValidation } = require("../../middlewares/rider/validations/validations.loginValidation");
-
+ 
 // Email/Password Registration and Login
 router.post("/register", registerValidation, riderController.registerRider);
 

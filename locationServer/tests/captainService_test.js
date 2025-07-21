@@ -3,7 +3,7 @@ const { redisClient } = require('../config/redis');
 
 (async () => {
   // Mock data for group
- const group = [
+ const group = [ 
   {
     requestId: 'REQ1',
     riderId: 'R001',
